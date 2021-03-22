@@ -1,27 +1,4 @@
-.iphone-x-6 {
-	width: 434px;
-	height: 865px;
-	background: #000000;
-}
-. {
-	width: 12.5px;
-	height: 21px;
-	background: #008080;
-	border-color: #000000;
-	border-width: 1px;
-	border-style: solid;
-}
-.label-51 {
-	width: 31px;
-	height: 21px;
-	opacity: 50%;
-	color: #000000;
-	font-family: "Helvetica";
-	font-weight: 700;
-	font-size: 15px;
-	text-align: left;
-}
-. {
+.label-1 {
 	width: 41px;
 	height: 23px;
 	color: #008080;
@@ -29,6 +6,14 @@
 	font-weight: 400;
 	font-size: 16px;
 	text-align: left;
+}
+.plain-svg-1 {
+	width: 12.5px;
+	height: 21px;
+	background: #008080;
+	border-color: #000000;
+	border-width: 1px;
+	border-style: solid;
 }
 .label-53 {
 	width: 158px;
@@ -68,20 +53,15 @@
 	border-style: solid;
 	border-radius: 3px 0px 0px 3px;
 }
-.account-circle-icon-4 {
-	width: 113px;
-	height: 113px;
-	background: #b3b3ba;
-}
-.add-a-photo-icon-1 {
-	width: 33px;
-	height: 33px;
-	background: #512da8;
-}
 .plain-svg-1 {
 	width: 21px;
 	height: 21px;
 	background: #512da8;
+}
+.account-circle-icon-4 {
+	width: 113px;
+	height: 113px;
+	background: #b3b3ba;
 }
 .rectangle-3 {
 	width: 248px;
@@ -116,18 +96,6 @@
 	width: 37px;
 	height: 33px;
 	background: #512da8;
-}
-.wifi-icon-5 {
-	width: 17px;
-	height: 12px;
-	opacity: 50%;
-	background: #000000;
-}
-.signal-icon-5 {
-	width: 17px;
-	height: 11px;
-	opacity: 50%;
-	background: #000000;
 }
 .rectangle-5 {
 	width: 247px;
@@ -197,12 +165,6 @@
 	height: 31px;
 	background: #512da8;
 }
-.battery-full-solid-icon-5 {
-	width: 20px;
-	height: 9px;
-	opacity: 50%;
-	background: #000000;
-}
 .rectangle-17 {
 	width: 248px;
 	height: 43px;
@@ -241,7 +203,7 @@
 	width: 153px;
 	height: 48px;
 	padding: 8px 8px 8px 8px;
-	box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	box-shadow: 0px 5px 10px rgba(81, 45, 168, 0.23);
 	background: #008080;
 }
 .label-1-copy-11 {
@@ -257,7 +219,7 @@
 	width: 152px;
 	height: 48px;
 	padding: 8px 8px 8px 8px;
-	box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	box-shadow: 0px 5px 10px rgba(81, 45, 168, 0.23);
 	background: #008080;
 }
 .label-1-copy-12 {
@@ -269,18 +231,12 @@
 	font-size: 17px;
 	text-align: center;
 }
+.add-a-photo-icon-1 {
+	width: 33px;
+	height: 33px;
+	background: #512da8;
+}
 .undraw_personal_site_re_c4bp {
 	width: 331px;
 	height: 200px;
-}
-.rectangle-55 {
-	width: 139px;
-	height: 6px;
-	padding: 8px 8px 8px 8px;
-	opacity: 50%;
-	background: #000000;
-	border-color: #000000;
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 12px 12px 12px 12px;
 }

@@ -1,46 +1,3 @@
-.iphone-x-3 {
-	width: 431px;
-	height: 860px;
-	background: #000000;
-}
-.rectangle-64 {
-	width: 378px;
-	height: 830px;
-	padding: 8px 8px 8px 8px;
-	background: #ffffff;
-}
-.more-horiz-icon-2 {
-	width: 45px;
-	height: 45px;
-	background: #008080;
-}
-.label-60 {
-	width: 31px;
-	height: 21px;
-	opacity: 50%;
-	color: #000000;
-	font-family: "Helvetica";
-	font-weight: 700;
-	font-size: 15px;
-	text-align: left;
-}
-.account-circle-icon-2 {
-	width: 156px;
-	height: 156px;
-	background: #b3b3ba;
-}
-.wifi-icon-6 {
-	width: 17px;
-	height: 12px;
-	opacity: 50%;
-	background: #000000;
-}
-.signal-icon-6 {
-	width: 17px;
-	height: 11px;
-	opacity: 50%;
-	background: #000000;
-}
 .label-40 {
 	width: 124px;
 	height: 42px;
@@ -50,9 +7,19 @@
 	font-size: 30px;
 	text-align: left;
 }
+.account-circle-icon-2 {
+	width: 156px;
+	height: 156px;
+	background: #b3b3ba;
+}
 .settings-icon-1 {
 	width: 37px;
 	height: 37px;
+	background: #008080;
+}
+.more-horiz-icon-2 {
+	width: 45px;
+	height: 45px;
 	background: #008080;
 }
 .rectangle-6 {
@@ -61,10 +28,12 @@
 	padding: 8px 8px 8px 8px;
 	background: #ffffff;
 }
-.favorite-border-icon-1 {
-	width: 32px;
-	height: 32px;
-	background: #512da8;
+.horizontal-line-2 {
+	width: 327px;
+	height: 2px;
+	border-color: #000000;
+	border-width: 1px;
+	border-style: solid;
 }
 .paragraph-8 {
 	width: 321px;
@@ -77,52 +46,6 @@
 	text-align: left;
 }
 .paragraph-9 {
-	width: 321px;
-	height: 20px;
-	color: #212121;
-	font-family: "Roboto";
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 1.3;
-	text-align: left;
-}
-.battery-full-solid-icon-6 {
-	width: 20px;
-	height: 9px;
-	opacity: 50%;
-	background: #000000;
-}
-.horizontal-line-2 {
-	width: 327px;
-	height: 2px;
-	border-color: #000000;
-	border-width: 1px;
-	border-style: solid;
-}
-.rectangle-10 {
-	width: 360px;
-	height: 72px;
-	padding: 8px 8px 8px 8px;
-	background: #ffffff;
-}
-.paragraph-17 {
-	width: 321px;
-	height: 16px;
-	color: #008080;
-	font-family: "Roboto";
-	font-weight: 400;
-	font-size: 12px;
-	line-height: 1.3;
-	text-align: left;
-}
-.horizontal-line-6 {
-	width: 327px;
-	height: 2px;
-	border-color: #000000;
-	border-width: 1px;
-	border-style: solid;
-}
-.paragraph-18 {
 	width: 321px;
 	height: 20px;
 	color: #212121;
@@ -171,6 +94,13 @@
 	padding: 8px 8px 8px 8px;
 	background: #ffffff;
 }
+.horizontal-line-4 {
+	width: 327px;
+	height: 2px;
+	border-color: #000000;
+	border-width: 1px;
+	border-style: solid;
+}
 .paragraph-13 {
 	width: 321px;
 	height: 16px;
@@ -181,14 +111,40 @@
 	line-height: 1.3;
 	text-align: left;
 }
-.horizontal-line-4 {
+.paragraph-14 {
+	width: 321px;
+	height: 20px;
+	color: #212121;
+	font-family: "Roboto";
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	text-align: left;
+}
+.rectangle-10 {
+	width: 360px;
+	height: 72px;
+	padding: 8px 8px 8px 8px;
+	background: #ffffff;
+}
+.horizontal-line-6 {
 	width: 327px;
 	height: 2px;
 	border-color: #000000;
 	border-width: 1px;
 	border-style: solid;
 }
-.paragraph-14 {
+.paragraph-17 {
+	width: 321px;
+	height: 16px;
+	color: #008080;
+	font-family: "Roboto";
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1.3;
+	text-align: left;
+}
+.paragraph-18 {
 	width: 321px;
 	height: 20px;
 	color: #212121;
@@ -202,14 +158,7 @@
 	width: 153px;
 	height: 48px;
 	padding: 8px 8px 8px 8px;
-	box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
-	background: #008080;
-}
-.rectangle-8-copy-9 {
-	width: 152px;
-	height: 48px;
-	padding: 8px 8px 8px 8px;
-	box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	box-shadow: 0px 5px 10px rgba(81, 45, 168, 0.23);
 	background: #008080;
 }
 .label-1-copy-13 {
@@ -221,6 +170,13 @@
 	font-size: 17px;
 	text-align: center;
 }
+.rectangle-8-copy-9 {
+	width: 152px;
+	height: 48px;
+	padding: 8px 8px 8px 8px;
+	box-shadow: 0px 5px 10px rgba(81, 45, 168, 0.23);
+	background: #008080;
+}
 .label-1-copy-14 {
 	width: 152px;
 	height: 34px;
@@ -229,4 +185,9 @@
 	font-weight: 600;
 	font-size: 17px;
 	text-align: center;
+}
+.favorite-border-icon-1 {
+	width: 32px;
+	height: 32px;
+	background: #512da8;
 }

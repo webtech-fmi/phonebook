@@ -1,28 +1,8 @@
-.rectangle-63 {
-	width: 390px;
-	height: 816px;
-	padding: 8px 8px 8px 8px;
-	background: #ffffff;
-}
-.iphone-x-1 {
-	width: 431px;
-	height: 860px;
-	background: #000000;
-}
-.label-1-copy-5 {
-	width: 132px;
-	height: 35px;
-	color: #512da8;
-	font-family: "Asap";
-	font-weight: 600;
-	font-size: 16px;
-	text-align: center;
-}
 .rectangle-8-copy-3 {
 	width: 280px;
 	height: 48px;
 	padding: 8px 8px 8px 8px;
-	box-shadow: 0px 5px 10px rgba(248, 95, 106, 0.23);
+	box-shadow: 0px 5px 10px rgba(81, 45, 168, 0.23);
 	background: #008080;
 }
 .label-1-copy-3 {
@@ -33,62 +13,6 @@
 	font-weight: 600;
 	font-size: 17px;
 	text-align: center;
-}
-.rectangle-49 {
-	width: 280px;
-	height: 2px;
-	padding: 8px 8px 8px 8px;
-	background: #ebebeb;
-}
-.label-39 {
-	width: 150px;
-	height: 22px;
-	color: #35424a;
-	font-family: "Asap";
-	font-weight: 500;
-	font-size: 16px;
-	text-align: left;
-}
-.rectangle-50 {
-	width: 280px;
-	height: 2px;
-	padding: 8px 8px 8px 8px;
-	background: #ebebeb;
-}
-.label-40 {
-	width: 133px;
-	height: 33px;
-	color: #35424a;
-	font-family: "Asap";
-	font-weight: 500;
-	font-size: 24px;
-	letter-spacing: 4px;
-	text-align: left;
-}
-.rectangle-47 {
-	width: 139px;
-	height: 6px;
-	padding: 8px 8px 8px 8px;
-	opacity: 50%;
-	background: #000000;
-	border-color: #000000;
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 12px 12px 12px 12px;
-}
-.label-1-copy-9 {
-	width: 132px;
-	height: 35px;
-	color: #989eb1;
-	font-family: "Asap";
-	font-weight: 500;
-	font-size: 16px;
-	text-align: center;
-}
-.remove-red-eye-icon-1 {
-	width: 24px;
-	height: 16px;
-	background: #d1d6db;
 }
 .heading-1 {
 	width: 84px;
@@ -108,14 +32,11 @@
 	font-size: 16px;
 	text-align: left;
 }
-.label-35 {
-	width: 58px;
-	height: 19px;
-	color: #512da8;
-	font-family: "Asap";
-	font-weight: 600;
-	font-size: 14px;
-	text-align: left;
+.rectangle-49 {
+	width: 280px;
+	height: 2px;
+	padding: 8px 8px 8px 8px;
+	background: #ebebeb;
 }
 .label-34 {
 	width: 36px;
@@ -125,6 +46,49 @@
 	font-weight: 600;
 	font-size: 14px;
 	text-align: left;
+}
+.label-39 {
+	width: 150px;
+	height: 22px;
+	color: #35424a;
+	font-family: "Asap";
+	font-weight: 500;
+	font-size: 16px;
+	text-align: left;
+}
+.rectangle-50 {
+	width: 280px;
+	height: 2px;
+	padding: 8px 8px 8px 8px;
+	background: #ebebeb;
+}
+.label-35 {
+	width: 58px;
+	height: 19px;
+	color: #512da8;
+	font-family: "Asap";
+	font-weight: 600;
+	font-size: 14px;
+	text-align: left;
+}
+.label-40 {
+	width: 133px;
+	height: 33px;
+	color: #35424a;
+	font-family: "Asap";
+	font-weight: 500;
+	font-size: 24px;
+	letter-spacing: 4px;
+	text-align: left;
+}
+.label-1-copy-5 {
+	width: 132px;
+	height: 35px;
+	color: #512da8;
+	font-family: "Asap";
+	font-weight: 600;
+	font-size: 16px;
+	text-align: center;
 }
 .heading-4 {
 	width: 131px;
@@ -136,36 +100,22 @@
 	letter-spacing: 1px;
 	text-align: center;
 }
+.label-1-copy-9 {
+	width: 132px;
+	height: 35px;
+	color: #989eb1;
+	font-family: "Asap";
+	font-weight: 500;
+	font-size: 16px;
+	text-align: center;
+}
+.remove-red-eye-icon-1 {
+	width: 24px;
+	height: 16px;
+	background: #d1d6db;
+}
 .account-box-icon-3 {
 	width: 129px;
 	height: 129px;
 	background: linear-gradient(to right, rgb(81, 45, 168) 0%, rgb(0, 128, 128) 16%);
-}
-.label-42 {
-	width: 31px;
-	height: 21px;
-	opacity: 50%;
-	color: #000000;
-	font-family: "Helvetica";
-	font-weight: 700;
-	font-size: 15px;
-	text-align: left;
-}
-.wifi-icon-1 {
-	width: 17px;
-	height: 12px;
-	opacity: 50%;
-	background: #000000;
-}
-.battery-full-solid-icon-1 {
-	width: 20px;
-	height: 9px;
-	opacity: 50%;
-	background: #000000;
-}
-.signal-icon-1 {
-	width: 17px;
-	height: 11px;
-	opacity: 50%;
-	background: #000000;
 }
