@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webtech-fmi/phonebook.git"
+    "url": "git+ssh://git@github.com:webtech-fmi/phonebook.git"
   },
   "keywords": [
     "phonebook"
   ],
   "author": "WebTech-FMI",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/webtech-fmi/phonebook/issues"
   },
