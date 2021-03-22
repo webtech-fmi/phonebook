@@ -1,0 +1,25 @@
+{
+  "name": "phonebook-web",
+  "version": "1.0.0",
+  "description": "phonebook web application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webtech-fmi/phonebook.git"
+  },
+  "keywords": [
+    "phonebook"
+  ],
+  "author": "WebTech-FMI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webtech-fmi/phonebook/issues"
+  },
+  "homepage": "https://github.com/webtech-fmi/phonebook#readme",
+  "dependencies": {
+    "vue": "^2.6.12"
+  }
+}
