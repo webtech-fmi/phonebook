@@ -1,7 +1,7 @@
 package service
 
 import (
-	"contact-service/pkg/domain"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/domain"
 
 	"github.com/rs/zerolog"
 )

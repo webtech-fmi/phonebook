@@ -2,13 +2,14 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"net/http"
+	"os"
 	"path/filepath"
-	"contact-service/pkg/infrastructure/log"
-	"contact-service/pkg/configuration"
-	"contact-service/pkg/web"
+
 	"github.com/spf13/cobra"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/configuration"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/infrastructure/log"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/web"
 )
 
 var serverCmd = &cobra.Command{

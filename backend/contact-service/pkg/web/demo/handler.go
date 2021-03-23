@@ -1,16 +1,12 @@
 package demo
 
 import (
-	"errors"
 	"net/http"
 
-	"contact-service/pkg/domain"
-	"contact-service/pkg/service"
-	weberror "contact-service/pkg/web/error"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/service"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/render"
-	"github.com/go-ozzo/ozzo-routing"
+	routing "github.com/go-ozzo/ozzo-routing"
+	"github.com/go-ozzo/ozzo-routing/content"
 	"github.com/rs/zerolog"
 )
 
@@ -24,52 +20,52 @@ const (
 )
 
 // Handler is just a route collection
-type Handler struct{}
+type Handler struct {}
 
 // GetDemo Load a specific demo by ID - only "demo" will be found
-func (h Handler) GetDemo(logger *zerolog.Logger, ds *service.DemoService) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ID := ozzo.Param(r, "ID")
+func (h Handler) GetDemo(logger *zerolog.Logger,ds *service.DemoService) func (c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Param("ID")
 		if ID == "" {
-			render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoParam, http.StatusBadRequest, errors.New("passed an empty ID"), logger))
-			return
+			// render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoParam, http.StatusBadRequest, errors.New("passed an empty ID"), logger))
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
 		}
-
+	
 		demo, err := ds.GetByID(ID)
 		if err != nil {
-			render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoLoad, http.StatusBadRequest, err, logger))
-			return
+			// render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoLoad, http.StatusBadRequest, err, logger))
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
-
-		render.Render(w, r, NewFetchResponse(*demo, ds))
+		w := content.JSONDataWriter{}
+		return w.Write(c.Response, NewFetchResponse(*demo, ds))
 	}
 }
 
-// CreateDemo allows HTTP creation.
-func (h Handler) CreateDemo(logger *zerolog.Logger, ds *service.DemoService) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		request := CreateRequest{}
-		if err := render.Bind(r, &request); err != nil {
-			render.Render(w, r, weberror.NewErrorResponse(ErrCreateDemoParam, http.StatusBadRequest, err, logger))
-			return
-		}
+// // CreateDemo allows HTTP creation.
+// func (h Handler) CreateDemo(logger *zerolog.Logger, ds *service.DemoService) func(http.ResponseWriter, *http.Request) {
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		request := CreateRequest{}
+// 		if err := render.Bind(r, &request); err != nil {
+// 			render.Render(w, r, weberror.NewErrorResponse(ErrCreateDemoParam, http.StatusBadRequest, err, logger))
+// 			return
+// 		}
 
-		err := ds.Store(request.Label)
-		if err != nil {
-			render.Render(w, r, weberror.NewErrorResponse(ErrCreateDemoStore, http.StatusBadRequest, err, logger))
-			return
-		}
+// 		err := ds.Store(request.Label)
+// 		if err != nil {
+// 			render.Render(w, r, weberror.NewErrorResponse(ErrCreateDemoStore, http.StatusBadRequest, err, logger))
+// 			return
+// 		}
 
-		render.Render(w, r, NewCreateResponse(domain.Demo{ID: "demo", Label: request.Label}, ds))
-	}
-}
+// 		render.Render(w, r, NewCreateResponse(domain.Demo{ID: "demo", Label: request.Label}, ds))
+// 	}
+// }
 
 // Routes for demo create/read
-func (h Handler) Routes(logger *zerolog.Logger, ds *service.DemoService) chi.Router {
-	r := chi.NewRouter()
+func (h Handler) Routes(logger *zerolog.Logger, ds *service.DemoService) []routing.Handler {
+	r := routing.New()
 
-	r.Post("/demo", h.CreateDemo(logger, ds))
-	r.Get("/demo/{ID}", h.GetDemo(logger, ds))
+	// r.Post("/demo", h.CreateDemo(logger, ds))
+	return []routing.Handler{r.Get("/demo/{ID}", h.GetDemo(logger, ds))}
 
 	return r
 }

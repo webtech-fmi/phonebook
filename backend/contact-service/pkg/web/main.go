@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"contact-service/pkg/configuration"
-	"contact-service/pkg/domain"
-	"contact-service/pkg/infrastructure/storage/memory"
-	"contact-service/pkg/service"
-	webdemo "contact-service/pkg/web/demo"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/configuration"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/domain"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/infrastructure/storage/memory"
+	"github.com/webtech-fmi/phonebook/backend/contact-service/pkg/service"
+	webdemo "github.com/webtech-fmi/phonebook/backend/contact-service/pkg/web/demo"
 
 	routing "github.com/go-ozzo/ozzo-routing"
 	"github.com/go-ozzo/ozzo-routing/v2/content"
@@ -54,7 +54,7 @@ func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger 
 	r := routing.New()
 
 	r.Use(content.TypeNegotiator(content.JSON))
-	r.Mount("/api", webdemo.Handler{}.Routes(logger, demoService))
+	r.Group("/api",webdemo.Handler{}.Routes(logger, demoService))
 
 	return r
 }
