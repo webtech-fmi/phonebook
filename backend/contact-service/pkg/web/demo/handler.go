@@ -25,23 +25,22 @@ type Handler struct {}
 // GetDemo Load a specific demo by ID - only "demo" will be found
 func (h Handler) GetDemo(logger *zerolog.Logger,ds *service.DemoService) func (c *routing.Context) error {
 	return func(c *routing.Context) error {
-		ID := c.Param("ID")
+		ID := c.Query("id")
 		if ID == "" {
-			// render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoParam, http.StatusBadRequest, errors.New("passed an empty ID"), logger))
 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
 		}
 
 		demo, err := ds.GetByID(ID)
 		if err != nil {
-			// render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoLoad, http.StatusBadRequest, err, logger))
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 		w := content.JSONDataWriter{}
+
 		return w.Write(c.Response, NewFetchResponse(*demo, ds))
 	}
 }
 
 // Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *zerolog.Logger, ds *service.DemoService) {
-	api.Get("/demo/{ID}", h.GetDemo(logger, ds))
+	api.Get("/demo", h.GetDemo(logger, ds))
 }

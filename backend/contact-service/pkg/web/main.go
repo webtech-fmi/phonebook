@@ -16,6 +16,7 @@ import (
 	webdemo "github.com/webtech-fmi/phonebook/backend/contact-service/pkg/web/demo"
 
 	routing "github.com/go-ozzo/ozzo-routing"
+	"github.com/go-ozzo/ozzo-routing/content"
 	"github.com/rs/zerolog"
 )
 
@@ -51,8 +52,8 @@ func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger 
 
 	r := routing.New()
 
-	// r.Use(content.TypeNegotiator(content.JSON))
 	api := r.Group("/api")
+	api.Use(content.TypeNegotiator(content.JSON))
 	webdemo.Handler{}.Routes(api, logger, demoService)
 
 	return r
