@@ -1,8 +1,6 @@
 package demo
 
 import (
-	"net/http"
-
 	ozzo "github.com/go-ozzo/ozzo-validation/v4"
 )
 
@@ -17,9 +15,4 @@ func (cr *CreateRequest) Validate() error {
 		cr,
 		ozzo.Field(&cr.Label, ozzo.Required),
 	)
-}
-
-// Binder interface for chi
-func (cr *CreateRequest) Bind(r *http.Request) error {
-	return cr.Validate()
 }

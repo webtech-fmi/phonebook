@@ -30,7 +30,7 @@ func (h Handler) GetDemo(logger *zerolog.Logger,ds *service.DemoService) func (c
 			// render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoParam, http.StatusBadRequest, errors.New("passed an empty ID"), logger))
 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
 		}
-	
+
 		demo, err := ds.GetByID(ID)
 		if err != nil {
 			// render.Render(w, r, weberror.NewErrorResponse(ErrGetDemoLoad, http.StatusBadRequest, err, logger))
@@ -41,31 +41,7 @@ func (h Handler) GetDemo(logger *zerolog.Logger,ds *service.DemoService) func (c
 	}
 }
 
-// // CreateDemo allows HTTP creation.
-// func (h Handler) CreateDemo(logger *zerolog.Logger, ds *service.DemoService) func(http.ResponseWriter, *http.Request) {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		request := CreateRequest{}
-// 		if err := render.Bind(r, &request); err != nil {
-// 			render.Render(w, r, weberror.NewErrorResponse(ErrCreateDemoParam, http.StatusBadRequest, err, logger))
-// 			return
-// 		}
-
-// 		err := ds.Store(request.Label)
-// 		if err != nil {
-// 			render.Render(w, r, weberror.NewErrorResponse(ErrCreateDemoStore, http.StatusBadRequest, err, logger))
-// 			return
-// 		}
-
-// 		render.Render(w, r, NewCreateResponse(domain.Demo{ID: "demo", Label: request.Label}, ds))
-// 	}
-// }
-
 // Routes for demo create/read
-func (h Handler) Routes(logger *zerolog.Logger, ds *service.DemoService) []routing.Handler {
-	r := routing.New()
-
-	// r.Post("/demo", h.CreateDemo(logger, ds))
-	return []routing.Handler{r.Get("/demo/{ID}", h.GetDemo(logger, ds))}
-
-	return r
+func (h Handler) Routes(api *routing.RouteGroup, logger *zerolog.Logger, ds *service.DemoService) {
+	api.Get("/demo/{ID}", h.GetDemo(logger, ds))
 }
