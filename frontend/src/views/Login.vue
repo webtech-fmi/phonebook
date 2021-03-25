@@ -1,143 +1,72 @@
 <template>
-    <md-avatar>
-      <img class="account-box-icon-3" src="../assets/avatar.png" alt="Avatar">
-    </md-avatar>
-    <div class="heading-4">PhoneBook</div>
-    <div class="heading-1">Sign In</div>
+    <div>
+      <img class="avatar" src="../assets/avatar.png" alt="Avatar">
+    </div>
+    <h2 class="phone-book-header">PhoneBook</h2>
+    <h3 class="sign-in-header">Sign In</h3>
     <br>
-        <span>Hi there! nice to see you again</span>
-    <div id = "login-form">
+        <h4 class="sign-in-message">Hi there! nice to see you again</h4>
+    <div class = "login-form">
+        <el-input placeholder="Please input email" v-model="email">{{ email }}</el-input>
+        <br>
+        <el-input placeholder="Please input password" v-model="password" show-password>
+            {{ password }}
+        </el-input>
+    </div>
+    <div>
+        <el-button class="sign-in-button">Sign in</el-button>
+    </div>
+
+    <div class="footer">
+        <el-button class="forgot-password">Forgot password?</el-button>
+        <el-button class="sign-up-button">Sign up</el-button>
+
     </div>
 </template>
 
 <script>
 export default {
   name: 'Login',
-  data() {
-    return {
-      email: String,
-    };
-  },
+  data: () => ({
+    email: '',
+    password: '',
+  }),
 };
 </script>
 
 <style scoped>
-.rectangle-8-copy-3 {
-width: 280px;
-height: 48px;
-padding: 8px 8px 8px 8px;
-box-shadow: 0px 5px 10px rgba(81, 45, 168, 0.23);
-background: #008080;
-}
-.label-1-copy-3 {
-width: 280px;
-height: 40px;
-color: #ffffff;
-font-family: "Asap";
-font-weight: 600;
-font-size: 17px;
-text-align: center;
-}
-.heading-1 {
-height: 36px;
-color: #008080;
-font-family: "Quicksand";
-font-weight: 700;
-font-size: 26px;
-}
-.heading-2 {
-width: 220px;
-height: 30px;
-color: #989eb1;
-font-family: "Asap";
-font-weight: 400;
-font-size: 16px;
-text-align: left;
-}
-.rectangle-49 {
-width: 280px;
-height: 2px;
-padding: 8px 8px 8px 8px;
-background: #ebebeb;
-}
-.label-34 {
-width: 36px;
-height: 19px;
-color: #512da8;
-font-family: "Asap";
-font-weight: 600;
-font-size: 14px;
-text-align: left;
-}
-.label-39 {
-width: 150px;
-height: 22px;
-color: #35424a;
-font-family: "Asap";
-font-weight: 500;
-font-size: 16px;
-text-align: left;
-}
-.rectangle-50 {
-width: 280px;
-height: 2px;
-padding: 8px 8px 8px 8px;
-background: #ebebeb;
-}
-.label-35 {
-width: 58px;
-height: 19px;
-color: #512da8;
-font-family: "Asap";
-font-weight: 600;
-font-size: 14px;
-text-align: left;
-}
-.label-40 {
-width: 133px;
-height: 33px;
-color: #35424a;
-font-family: "Asap";
-font-weight: 500;
-font-size: 24px;
-letter-spacing: 4px;
-text-align: left;
-}
-.label-1-copy-5 {
-width: 132px;
-height: 35px;
-color: #512da8;
-font-family: "Asap";
-font-weight: 600;
-font-size: 16px;
-text-align: center;
-}
-.heading-4 {
-height: 33px;
-margin-bottom: 15px;
-color: #512da8;
-font-family: "Asap";
-font-weight: 600;
-font-size: 24px;
-letter-spacing: 1px;
-text-align: center;
-}
-.label-1-copy-9 {
-width: 132px;
-height: 35px;
-color: #989eb1;
-font-family: "Asap";
-font-weight: 500;
-font-size: 16px;
-text-align: center;
-}
-.remove-red-eye-icon-1 {
-width: 24px;
-height: 16px;
-background: #d1d6db;
-}
-.account-box-icon-3 {
-width: 129px;
-height: 129px;
-}
+ .avatar {
+     height: 20vh;
+     padding: 1em;
+ }
+
+ .phone-book-header{
+     color: #512da8;
+     padding-bottom: 2em;
+ }
+
+ .sign-in-header{
+     color: #008080;
+ }
+
+ .sign-in-message{
+     color: #b3b3ba;
+     margin-bottom: 5vh;
+ }
+ .login-form{
+     width: 25vw;
+     margin-bottom: 5vh;
+ }
+ .sign-in-button{
+     width: 24vw;
+     height: 5vh;
+     background: #008080;
+     color: white;
+ }
+ .footer{
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+     margin-top: 10vh;
+ }
 </style>
