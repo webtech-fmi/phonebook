@@ -1,4 +1,5 @@
 <template>
+<div class="background">
     <div>
       <img class="avatar" src="../assets/avatar.png" alt="Avatar">
     </div>
@@ -22,6 +23,7 @@
         <el-button class="sign-up-button">Sign up</el-button>
 
     </div>
+</div>
 </template>
 
 <script>
@@ -35,6 +37,12 @@ export default {
 </script>
 
 <style scoped>
+ .background{
+     height: 100vh;
+     background-image: url('../assets/background.svg');
+     background-repeat: no-repeat;
+     background-size: 100%;
+ }
  .avatar {
      height: 20vh;
      padding: 1em;
@@ -54,7 +62,8 @@ export default {
      margin-bottom: 5vh;
  }
  .login-form{
-     width: 25vw;
+     width: 30vw;
+     margin:auto;
      margin-bottom: 5vh;
  }
  .sign-in-button{
