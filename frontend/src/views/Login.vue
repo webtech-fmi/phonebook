@@ -8,9 +8,14 @@
     <br>
         <h4 class="sign-in-message">Hi there! nice to see you again</h4>
     <div class = "login-form">
-        <el-input placeholder="Please input email" v-model="email">{{ email }}</el-input>
+        <el-input class="input-field" placeholder="Please input email" v-model="email">
+            {{ email }}
+        </el-input>
         <br>
-        <el-input placeholder="Please input password" v-model="password" show-password>
+        <el-input class="input-field"
+         placeholder="Please input password"
+         v-model="password"
+         show-password>
             {{ password }}
         </el-input>
     </div>
@@ -62,7 +67,7 @@ export default {
      margin-bottom: 5vh;
  }
  .login-form{
-     width: 30vw;
+     width: 25vw;
      margin:auto;
      margin-bottom: 5vh;
  }
@@ -76,6 +81,9 @@ export default {
      display: flex;
      flex-direction: row;
      justify-content: center;
-     margin-top: 10vh;
+     margin-top: 7vh;
+ }
+.input-field{
+     margin-bottom: 3vh;
  }
 </style>
