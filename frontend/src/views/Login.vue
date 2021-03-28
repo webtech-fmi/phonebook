@@ -83,6 +83,16 @@ export default {
      justify-content: center;
      margin-top: 7vh;
  }
+ @media (max-width: 800px) and (max-height: 600px) {
+     .login-form{
+         width: 70vw;
+         margin: auto;
+         margin-bottom: 3vh;
+     }
+     .sign-in-button {
+         width: 40vw;
+     }
+ }
 .input-field{
      margin-bottom: 3vh;
  }
