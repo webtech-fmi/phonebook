@@ -1,16 +1,29 @@
 <template>
     <div class="background">
-        <h2 class="UserContacts">My Contacts</h2>
-        <img class="dots" src="../assets/more_horiz-24px.svg" alt="dotsPicture">
-        <img class="plus" src="../assets/add-24px.svg" alt="plusPicture">
-        <div>
-            <input class="search" type="text" v-model="search" placeholder="Search in Contacts"/>
-            <img src="../assets/../assets/search-24px.svg" alt="">
+        <div class="header">
+            <el-button class="more-button" type="primary" icon="el-icon-more" circle></el-button>
+            <h2 class="UserContacts">My Contacts</h2>
+            <el-button class="add-button" type="primary" icon="el-icon-plus" circle></el-button>
+        </div>
+        <div class="search">
+            <!-- <input
+            class="search"
+            type="text"
+            v-model="search"
+            placeholder="Search in Contacts"/>
+            <img src="../assets/search-24px.svg" alt=""> -->
+            <el-autocomplete
+                class="inline-input"
+                v-model="state1"
+                :fetch-suggestions="querySearch"
+                placeholder="Please Input"
+                @select="handleSelect">
+            </el-autocomplete>
         </div>
         <ol class="list">
-            <el-row>
+            <!-- <el-row>
                 <li>Merilin Pitsina</li>
-                <el-checkbox v-model="checked"></el-checkbox>
+                <el-checkbox icon="el-icon-star-off" v-model="checked"></el-checkbox>
             </el-row>
             <el-row>
                 <li>Nicole Angelova</li>
@@ -23,6 +36,14 @@
             <el-row>
                 <li>Kostadin Kolchev</li>
                 <el-checkbox v-model="checked"></el-checkbox>
+            </el-row> -->
+            <el-row v-for="contact in contacts" :key="contact">
+                <el-button class="contact-button">
+                    {{contact.name}}
+                    <el-button class="favorite-button"
+                               :icon="contact.favorite ? 'el-icon-star-off' : 'el-icon-star-on'"
+                               @click="toggleFavorite(contact.id)"></el-button>
+                    </el-button>
             </el-row>
         </ol>
     </div>
@@ -33,7 +54,38 @@ export default {
   name: 'Contacts',
   data: () => ({
     search: '',
+    contacts: [
+      {
+        id: 1,
+        name: 'Merilin Pisina',
+        favorite: true,
+      },
+      {
+        id: 2,
+        name: 'Nicole Angelova',
+        favorite: false,
+      },
+      {
+        id: 3,
+        name: 'Velko Bonev',
+        favorite: false,
+      },
+      {
+        id: 4,
+        name: 'Kostadin Kolchev',
+        favorite: false,
+      },
+    ],
   }),
+  methods: {
+    toggleFavorite(id) {
+      this.contacts.forEach((contact) => {
+        if (contact.id === id) {
+          contact.favorite = !contact.favorite;
+        }
+      });
+    },
+  },
 };
 </script>
 
@@ -45,38 +97,44 @@ export default {
      background-size: 100%;
  }
 
-.dots{
-     position: fixed;
-     top: 0px;
-     left: 0px;
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 3vh 3vw 3vh 3vw
+
+}
+
+.more-button{
+    left: 0;
  }
 
- .plus{
-     position: absolute;
-     top: 0px;
-     right: 0px;
+ .add-button{
+     right: 0;
  }
 
  .search{
      color: #008080;
-     padding: 2vw;
-     background: url(images/comment-author.gif) no-repeat scroll 7px 7px;
-     padding-left:30px;
+     /* background: url(images/comment-author.gif) no-repeat scroll 7px 7px; */
  }
 
- .list{
-    display:table;
-    margin: 0 auto;
-    list-style-type: none;
- }
+.favorite-button{
+    background-color: transparent;
+    border: none;
+}
 
- li{
-    float:left;
-    width:100%;
-    border-bottom: 1px solid black;
- }
- el-row{
-     margin:10vw;
- }
+.contact-button{
+    background-color: transparent;
+    border: none;
+    width: 40vw;
+    color: black;
+    text-align: left;
+}
 
+.list{
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 </style>
