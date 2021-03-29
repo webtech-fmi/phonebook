@@ -45,7 +45,6 @@ export default {
  .background{
      height: 100vh;
      background-image: url('../assets/background.svg');
-     background-repeat: no-repeat;
      background-size: 100%;
  }
  .avatar {
