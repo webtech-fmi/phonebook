@@ -1,3 +1,3 @@
 GOSERVICE := contact-service
 
-include ./Makefile.GO
+include ../Makefile.GO
