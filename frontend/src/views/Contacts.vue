@@ -39,11 +39,14 @@
             </el-row> -->
             <el-row v-for="contact in contacts" :key="contact">
                 <el-button class="contact-button">
-                    {{contact.name}}
-                    <el-button class="favorite-button"
-                               :icon="contact.favorite ? 'el-icon-star-off' : 'el-icon-star-on'"
-                               @click="toggleFavorite(contact.id)"></el-button>
-                    </el-button>
+                    <div class="contact-button-container">
+                        <h3 class="contact-name">{{contact.name}}</h3>
+                        <el-button class="favorite-button"
+                                :icon="contact.favorite ? 'el-icon-star-off' : 'el-icon-star-on'"
+                                @click="toggleFavorite(contact.id)">
+                        </el-button>
+                    </div>
+                </el-button>
             </el-row>
         </ol>
     </div>
@@ -78,6 +81,7 @@ export default {
     ],
   }),
   methods: {
+    /* eslint no-param-reassign: ["error", { "props": false }] */
     toggleFavorite(id) {
       this.contacts.forEach((contact) => {
         if (contact.id === id) {
@@ -90,10 +94,10 @@ export default {
 </script>
 
 <style>
+
 .background{
      height: 100vh;
      background-image: url('../assets/background.svg');
-     background-repeat: no-repeat;
      background-size: 100%;
  }
 
@@ -101,6 +105,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     margin: 3vh 3vw 3vh 3vw
 
 }
@@ -126,9 +131,20 @@ export default {
 .contact-button{
     background-color: transparent;
     border: none;
-    width: 40vw;
+    max-width: 40vw;
     color: black;
-    text-align: left;
+}
+
+.contact-button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 40vw;
+}
+
+.contact-name{
+    overflow: hidden;
 }
 
 .list{
@@ -136,5 +152,15 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+@media (max-width: 1024px) and (max-height: 824px) {
+    .contact-button-container{
+        max-width: 70vw;
+    }
+
+    .contact-button{
+        max-width: 70vw;
+    }
 }
 </style>
