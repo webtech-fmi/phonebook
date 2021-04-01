@@ -25,7 +25,7 @@
 
     <div class="footer">
         <el-button class="forgot-password">Forgot password?</el-button>
-        <el-button class="sign-up-button">Sign up</el-button>
+        <el-button class="sign-up-button" @click="$router.push('/signup')">Sign up</el-button>
 
     </div>
 </div>
@@ -45,7 +45,6 @@ export default {
  .background{
      height: 100vh;
      background-image: url('../assets/background.svg');
-     background-repeat: no-repeat;
      background-size: 100%;
  }
  .avatar {
