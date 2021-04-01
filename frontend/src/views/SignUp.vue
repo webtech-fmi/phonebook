@@ -12,7 +12,7 @@
             <el-input placeholder="Your password" v-model="password">{{password}}</el-input>
         </div>
         <div>
-            <el-checkbox v-model="checked">
+            <el-checkbox v-model="privacyPolicyCheck">
                 I agree to the <el-link href="" target="#512da8">Terms of services</el-link> and
                 <el-link href="">Privacy Policy</el-link>
             </el-checkbox>
@@ -20,7 +20,8 @@
         <div>
             <el-button class="continue-button">Continue</el-button>
         </div>
-        <el-field type="question">Have an account?</el-field> <el-link href="https:http://localhost:8080/Login" target="_blue">Sign In</el-link>
+        <el-field type="question" >Have an account?</el-field>
+        <el-link @click="$router.push('/login')" target="_blue">Sign In</el-link>
         <div>
             <img class="SignUpPicture" src="../assets/undraw_Mobile_app_re_catg.svg" alt="Picture">
         </div>
@@ -31,6 +32,7 @@
 export default {
   name: 'SignUp',
   data: () => ({
+    privacyPolicyCheck: false,
     name: '',
     number: '',
     email: '',
@@ -43,11 +45,12 @@ export default {
  .background{
      height: 100vh;
      background-image: url('../assets/background.svg');
-     background-repeat: no-repeat;
      background-size: 100%;
  }
 
  .sign-up-header{
+     margin-top: 5vh;
+     margin-bottom: 3vh;
      color: #008080;
  }
 
