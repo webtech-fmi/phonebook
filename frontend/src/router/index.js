@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login.vue';
 import Home from '../views/Home.vue';
 import SignUp from '../views/SignUp.vue';
-import Me from '../views/Me.vue';
-import Contacts from '../views/Contacts.vue';
+import Contact from '../views/Contact.vue';
+import AllContacts from '../views/AllContacts.vue';
 
 const routes = [
   {
@@ -24,12 +24,12 @@ const routes = [
   {
     path: '/me',
     name: 'Me',
-    component: Me,
+    component: Contact,
   },
   {
-    path: '/contacts',
-    name: 'Contacts',
-    component: Contacts,
+    path: '/allcontacts',
+    name: 'AllContacts',
+    component: AllContacts,
   },
 ];
 
