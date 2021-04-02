@@ -92,7 +92,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .background{
      height: 100vh;
      background-image: url('../assets/background.svg');
