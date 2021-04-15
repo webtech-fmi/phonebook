@@ -25,8 +25,7 @@
 
     <div class="footer">
         <el-button class="forgot-password">Forgot password?</el-button>
-        <el-button class="sign-up-button">Sign up</el-button>
-
+        <el-button class="sign-up-button" @click="$router.push('/signup')">Sign up</el-button>
     </div>
 </div>
 </template>
