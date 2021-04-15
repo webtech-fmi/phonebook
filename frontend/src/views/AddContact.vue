@@ -1,7 +1,11 @@
 <template>
 <div class="background">
     <div class="header">
-        <el-button class="back-button" type="primary" icon="el-icon-arrow-left">Back</el-button>
+        <el-button
+        class="back-button"
+        type="primary"
+        icon="el-icon-arrow-left"
+        @click="$router.push('/allcontacts')">Back</el-button>
         <h3 class="header-text">Add Contact</h3>
     </div>
     <div class="avatar">
