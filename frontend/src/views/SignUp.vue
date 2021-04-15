@@ -21,7 +21,7 @@
             <el-button class="continue-button">Continue</el-button>
         </div>
         <el-field type="question" >Have an account?</el-field>
-        <el-link @click="$router.push('/login')" target="_blue">Sign In</el-link>
+        <el-link @click="$router.push('/login')" target="_self">Sign In</el-link>
         <div>
             <img class="SignUpPicture" src="../assets/undraw_Mobile_app_re_catg.svg" alt="Picture">
         </div>
