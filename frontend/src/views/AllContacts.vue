@@ -1,7 +1,12 @@
 <template>
     <div class="background">
         <div class="header">
-            <el-button class="more-button" type="primary" icon="el-icon-more" circle></el-button>
+            <el-button
+             class="more-button"
+              type="primary"
+              icon="el-icon-more"
+              @click="sideMenu = !sideMenu"
+                circle></el-button>
             <h2 class="UserContacts">My Contacts</h2>
             <el-button
                 class="add-button"
@@ -10,30 +15,15 @@
                 circle @click="$router.push('/add-contact')">
             </el-button>
         </div>
-            <el-autocomplete
-                class="inline-input"
-                v-model="state1"
-                :fetch-suggestions="querySearch"
-                placeholder="Please Input"
-                @select="handleSelect">
-            </el-autocomplete>
+         <HamburgerMenu class="side-menu" v-if="sideMenu"></HamburgerMenu>
+          <el-autocomplete
+              class="inline-input"
+              v-model="state1"
+              :fetch-suggestions="querySearch"
+              placeholder="Please Input"
+              @select="handleSelect">
+          </el-autocomplete>
         <ol class="list">
-            <!-- <el-row>
-                <li>Merilin Pitsina</li>
-                <el-checkbox icon="el-icon-star-off" v-model="checked"></el-checkbox>
-            </el-row>
-            <el-row>
-                <li>Nicole Angelova</li>
-                <el-checkbox v-model="checked"></el-checkbox>
-            </el-row>
-            <el-row>
-                <li>Velko Bonev</li>
-                <el-checkbox v-model="checked"></el-checkbox>
-            </el-row>
-            <el-row>
-                <li>Kostadin Kolchev</li>
-                <el-checkbox v-model="checked"></el-checkbox>
-            </el-row> -->
             <el-row class="row" v-for="contact in contacts" :key="contact">
                 <el-column class="left-column">
                   <el-button class="contact-button" @click="$router.push(`/contact/${contact.id}`)">
@@ -52,10 +42,13 @@
 </template>
 
 <script>
+import HamburgerMenu from '../components/HamburgerMenu.vue';
+
 export default {
   name: 'AllContacts',
   data: () => ({
     search: '',
+    sideMenu: false,
     contacts: [
       {
         id: 1,
@@ -79,6 +72,11 @@ export default {
       },
     ],
   }),
+
+  components: {
+    HamburgerMenu,
+  },
+
   methods: {
     /* eslint no-param-reassign: ["error", { "props": false }] */
     toggleFavorite(id) {
