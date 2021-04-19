@@ -8,8 +8,8 @@
         <el-avatar class="avatar-image" :size="large" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
         <h4 class="user-name"> {{name}} </h4>
         <h5 class="user-email"> {{email}}</h5>
-
     </div>
+
     <el-menu default-active="2" class="menu"
         @open="handleOpen"
         @close="handleClose"
@@ -33,6 +33,8 @@
             <template #title>Sign Out</template>
         </el-menu-item>
     </el-menu>
+
+    <img class="footer-image" src="../assets/hamburger-menu-image.svg" alt="FooterImg">
 </div>
 </template>
 
