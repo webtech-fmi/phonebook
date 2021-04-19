@@ -7,15 +7,16 @@
             icon="el-icon-arrow-left"
             size="medium"
             v-if="id != -1">
-            Back</el-button>
+                Back
+            </el-button>
             <el-button
              class="more-button"
               type="primary"
               icon="el-icon-more"
               circle
-              v-if="id === -1">
+              @click="sideMenu = !sideMenu">
               </el-button>
-
+            <HamburgerMenu class="side-menu" v-if="sideMenu"></HamburgerMenu>
         </div>
         <div>
         <el-avatar class="avatar-image" :size="large" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
@@ -73,6 +74,8 @@
 </template>
 
 <script>
+import HamburgerMenu from '../components/HamburgerMenu.vue';
+
 export default {
   name: 'Contact',
   data: () => ({
@@ -82,7 +85,11 @@ export default {
     company: 'JohnDoes company',
     mobile: '11111111',
     work: '1111111111',
+    sideMenu: false,
   }),
+  components: {
+    HamburgerMenu,
+  },
 };
 </script>
 
