@@ -1,0 +1,16 @@
+version: "2.4"
+
+services:
+  psql:
+    build: .
+    restart: always
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./storage:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 0.5
