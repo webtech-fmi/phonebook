@@ -1,0 +1,12 @@
+repository:
+  adapter: psql
+  options:
+    host: localhost
+    port: 5432
+    dbname: postgres
+    username: root
+    password: root
+    max_idle: 2
+    max_open: 5
+    sslmode: disable
+    debug: false

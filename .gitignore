@@ -1,3 +1,4 @@
 frontend/node_modules
+backend/phonebook-api/node_modules
 backend/go/profile-service/profile-service
 backend/go/authentication-service/authentication-service
