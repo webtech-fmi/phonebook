@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS users
 	full_name TEXT NOT NULL,
 	password TEXT NOT NULL,
 	lock JSONB,
-	metadata JSONB
+	metadata JSONB,
+	UNIQUE(email)
 );
