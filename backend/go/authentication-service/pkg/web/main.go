@@ -15,13 +15,13 @@ import (
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/infrastructure/storage"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/service"
-	webprofile "github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/web/profile"
+	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/web/users"
 
 	routing "github.com/go-ozzo/ozzo-routing"
 	"github.com/go-ozzo/ozzo-routing/content"
 )
 
-func NewProfileRepository(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) (domain.Repository, error) {
+func NewUserRepository(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) (domain.Repository, error) {
 	switch cfg.Repository.Adapter {
 	// case "memory":
 	// 	return memory.NewRepository(ctx, cfg.Repository.Options, logger)
@@ -33,7 +33,7 @@ func NewProfileRepository(ctx context.Context, cfg *configuration.AppConfigurati
 }
 
 
-func NewProfileService(r domain.Repository, logger *log.Logger) (*service.UserService, error) {
+func NewUserService(r domain.Repository, logger *log.Logger) (*service.UserService, error) {
 	return &service.UserService{
 		Repository: r,
 		Logger:     logger,
@@ -42,21 +42,21 @@ func NewProfileService(r domain.Repository, logger *log.Logger) (*service.UserSe
 
 // NewRouter creates a mux with mounted routes and instantiates respective dependencies.
 func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) *routing.Router {
-	profileRepository, err := NewProfileRepository(ctx, cfg, logger)
+	userRepository, err := NewUserRepository(ctx, cfg, logger)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("Could not instantiate the users repository")
 	}
 
-	profileService, err := NewProfileService(profileRepository, logger)
+	userService, err := NewUserService(userRepository, logger)
 	if err != nil {
-		logger.Fatal().Err(err).Msg("Could not instantiate the demo service")
+		logger.Fatal().Err(err).Msg("Could not instantiate the user service")
 	}
 
 	r := routing.New()
 
-	profilesAPI := r.Group("/profiles")
-	profilesAPI.Use(content.TypeNegotiator(content.JSON))
-	webprofile.Handler{}.Routes(profilesAPI, logger, profileService)
+	usersAPI := r.Group("/users")
+	usersAPI.Use(content.TypeNegotiator(content.JSON))
+	users.Handler{}.Routes(usersAPI, logger, userService)
 
 	return r
 }

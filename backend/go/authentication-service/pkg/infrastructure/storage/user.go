@@ -21,7 +21,6 @@ func (r *UserRepository) Add(p domain.User) error {
 	_, err := r.Adapter.DB.
 		Insert("users", dbx.Params{
 			"full_name":  p.FullName,
-			"birth_date": p.BirthDate,
 		}).Execute()
 	return err
 }

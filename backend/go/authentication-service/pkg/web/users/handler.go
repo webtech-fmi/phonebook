@@ -13,8 +13,6 @@ import (
 )
 
 const (
-	// You decide if you want to wrap errors or
-	// will use values.
 	ErrCreateUserParam = "create_user_param"
 )
 
@@ -47,11 +45,12 @@ func (h Handler) CreateUser(logger *log.Logger, ds *service.UserService) func(c 
 			return err
 		}
 
-		if err := ds.CreateUser(request.Name, request.Date); err != nil {
+		id, err := ds.CreateUser(&request)
+		if err != nil {
 			return err
 		}
 
-		fmt.Println(request)
+		fmt.Println(id)
 		return nil
 	}
 }

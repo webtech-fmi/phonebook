@@ -1,3 +1,3 @@
-GOSERVICE := profile-service
+GOSERVICE := authentication-service
 
 include ../Makefile.GO

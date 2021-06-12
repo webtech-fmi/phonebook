@@ -6,8 +6,8 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
+	"github.com/webtech-fmi/phonebook/backend/go/domain/auth"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
-	// "github.com/webtech-fmi/phonebook/backend/go/domain/vocabulary"
 )
 
 type UserService struct {
@@ -25,11 +25,16 @@ func (s UserService) CreateUser(payload domain.UserPayload) (string, error) {
 	newUser.ID = uuid.New()
 	newUser.CreatedTime = &createdTime
 
-	hashedPassword, err := domain.HashPassword(newUser.Password)
+	hashedPassword, err := auth.HashPassword(newUser.Password)
 	if err != nil {
 		return "", err
 	}
 	newUser.Password = hashedPassword
 
-	return s.Repository.Add(*newUser)
+	err = s.Repository.Add(*newUser)
+	if err != nil {
+		return "", err
+	}
+
+	return newUser.ID.String(), nil
 }
