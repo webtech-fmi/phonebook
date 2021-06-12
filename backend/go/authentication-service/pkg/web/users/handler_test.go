@@ -1,4 +1,4 @@
-package profile_test
+package users_test
 
 // import (
 // 	"bytes"

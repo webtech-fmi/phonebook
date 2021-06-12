@@ -14,6 +14,12 @@ type User struct {
 	ID           uuid.UUID `db:"id"`
 	CreatedTime  time.Time `db:"created_time"`
 	ModifiedTime time.Time `db:"modified_time"`
+	Email        string    `db:"email"`
 	FullName     string    `db:"full_name"`
-	BirthDate    string    `db:"birth_date"`
+	Password     string    `db:"password"`
+}
+
+// UserPayload interface
+type UserPayload interface {
+	ToUser() (*User, error)
 }

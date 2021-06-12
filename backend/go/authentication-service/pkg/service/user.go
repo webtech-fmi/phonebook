@@ -1,9 +1,9 @@
 package service
 
 import (
-	// "time"
+	"time"
 
-	// "github.com/google/uuid"
+	"github.com/google/uuid"
 
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
@@ -15,15 +15,21 @@ type UserService struct {
 	Logger     *log.Logger
 }
 
-func (s UserService) CreateUser(name, date string) error {
-	// // hashing password
-	// now := time.Now().UTC()
-	// userID := uuid.New()
-	// // create lock
-	// newLock := &domain.Lock{}
+func (s UserService) CreateUser(payload domain.UserPayload) (string, error) {
+	newUser, err := payload.ToUser()
+	if err != nil {
+		return "", err
+	}
 
-	return s.Repository.Add(domain.User{
-		FullName:  name,
-		BirthDate: date,
-	})
+	createdTime := time.Now().UTC()
+	newUser.ID = uuid.New()
+	newUser.CreatedTime = &createdTime
+
+	hashedPassword, err := domain.HashPassword(newUser.Password)
+	if err != nil {
+		return "", err
+	}
+	newUser.Password = hashedPassword
+
+	return s.Repository.Add(*newUser)
 }

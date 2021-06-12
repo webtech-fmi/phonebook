@@ -1,4 +1,4 @@
-package users
+package user
 
 import (
 	ozzo "github.com/go-ozzo/ozzo-validation/v4"
@@ -17,4 +17,13 @@ func (cr *CreateRequest) Validate() error {
 		ozzo.Field(&cr.Name, ozzo.Required),
 		ozzo.Field(&cr.Date, ozzo.Required),
 	)
+}
+
+func (cr *CreateRequest) ToUser() (*domain.User, error) {
+	return &domain.User{
+		Email:    cr.Email,
+		Password: cr.Password,
+		FullName: cr.FullName,
+		Metadata: domain.Metadata{},
+	}, nil
 }
