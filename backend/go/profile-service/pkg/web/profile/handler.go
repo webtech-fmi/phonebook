@@ -6,6 +6,7 @@ import (
 	routing "github.com/go-ozzo/ozzo-routing"
 	"github.com/go-ozzo/ozzo-routing/content"
 
+	"github.com/webtech-fmi/phonebook/backend/go/domain/service/authentication"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
 	"github.com/webtech-fmi/phonebook/backend/go/profile-service/pkg/service"
 )
@@ -14,14 +15,19 @@ import (
 type Handler struct{}
 
 // GetByOwner - load profile by owner ID
-func (h Handler) GetByOwner(logger *log.Logger, ds *service.ProfileService) func(c *routing.Context) error {
+func (h Handler) GetByOwner(logger *log.Logger, ds *service.ProfileService, a authentication.Service) func(c *routing.Context) error {
 	return func(c *routing.Context) error {
 		ID := c.Query("id")
 		if ID == "" {
 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
 		}
 
-		profile, err := ds.GetByOwnerID(ID)
+		session, err := a.ResolveSessionID(ID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}		
+
+		profile, err := ds.GetByOwnerID(session.ID)
 		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
@@ -66,11 +72,21 @@ func (h Handler) CreateProfile(logger *log.Logger, ds *service.ProfileService) f
 	}
 }
 
-func (h Handler) EditProfile(logger *log.Logger, ds *service.ProfileService) func(c *routing.Context) error {
+func (h Handler) EditProfile(logger *log.Logger, ds *service.ProfileService, a authentication.Service) func(c *routing.Context) error {
 	return func(c *routing.Context) error {
 		ID := c.Query("id")
 		if ID == "" {
 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		session, err := a.ResolveSessionID(ID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		profile, err := ds.GetByOwnerID(session.ID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
 		request := EditRequest{}
@@ -79,7 +95,7 @@ func (h Handler) EditProfile(logger *log.Logger, ds *service.ProfileService) fun
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		if err := ds.EditProfile(ID, &request); err != nil {
+		if err := ds.EditProfile(profile.ID.String(), &request); err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
@@ -89,9 +105,9 @@ func (h Handler) EditProfile(logger *log.Logger, ds *service.ProfileService) fun
 }
 
 // Routes for demo create/read
-func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ProfileService) {
-	api.Get("/by-owner", h.GetByOwner(logger, s))
+func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ProfileService, a authentication.Service) {
+	api.Get("/by-owner", h.GetByOwner(logger, s, a))
 	api.Get("/by-id", h.Get(logger, s))
 	api.Post("/create", h.CreateProfile(logger, s))
-	api.Post("/edit", h.EditProfile(logger, s))
+	api.Post("/edit", h.EditProfile(logger, s, a))
 }

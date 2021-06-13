@@ -9,6 +9,9 @@ import (
 	"syscall"
 	"time"
 
+	domain_services "github.com/webtech-fmi/phonebook/backend/go/domain/service"
+	"github.com/webtech-fmi/phonebook/backend/go/domain/service/authentication"
+	"github.com/webtech-fmi/phonebook/backend/go/domain/service/profile"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
 
 	"github.com/webtech-fmi/phonebook/backend/go/contact-service/pkg/configuration"
@@ -39,6 +42,29 @@ func NewContactService(r domain.Repository, logger *log.Logger) (*service.Contac
 	}, nil
 }
 
+func NewHTTPServices(ctx context.Context, cfg *configuration.AppConfiguration) (*domain_services.HTTPServices, error) {
+	httpServices := domain_services.HTTPServices{}
+	if cfg.Services != nil {
+		for _, serv := range *cfg.Services {
+			switch serv.Service {
+			case "authentication":
+				s, err := authentication.NewService(serv.URI)
+				if err != nil {
+					return nil, err
+				}
+				httpServices.Authentication = s
+			case "profile":
+				s, err := profile.NewService(serv.URI)
+				if err != nil {
+					return nil, err
+				}
+				httpServices.Profile = s
+			}
+		}
+	}
+	return &httpServices, nil
+}
+
 // NewRouter creates a mux with mounted routes and instantiates respective dependencies.
 func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) *routing.Router {
 	contactRepository, err := NewContactRepository(ctx, cfg, logger)
@@ -51,11 +77,16 @@ func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger 
 		logger.Fatal().Err(err).Msg("Could not instantiate the contact service")
 	}
 
+	httpServices, err := NewHTTPServices(ctx, cfg)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("Could not instantiate the profile service")
+	}
+
 	r := routing.New()
 
 	contactsAPI := r.Group("/contacts")
 	contactsAPI.Use(content.TypeNegotiator(content.JSON))
-	webcontact.Handler{}.Routes(contactsAPI, logger, contactService)
+	webcontact.Handler{}.Routes(contactsAPI, logger, contactService, httpServices)
 
 	return r
 }

@@ -10,3 +10,9 @@ repository:
     max_open: 5
     sslmode: disable
     debug: false
+
+services:
+  - service: authentication
+    uri: http://localhost:15001
+  - service: profile
+    uri: http://localhost:15003

@@ -44,6 +44,7 @@ func (cr *CreateRequest) ToContact() (*domain.Contact, error) {
 }
 
 type EditRequest struct {
+	ID       string             `json:"id"`
 	Email    domain.ContactInfo `json:"email"`
 	Phone    domain.ContactInfo `json:"phone"`
 	Personal domain.Personal    `json:"personal"`
@@ -63,5 +64,6 @@ func (cr *EditRequest) ToContact() (*domain.Contact, error) {
 }
 
 type MergeRequest struct {
+	Main     string   `json:"main"`
 	Contacts []string `json:"contacts"`
 }

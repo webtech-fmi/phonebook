@@ -16,12 +16,18 @@ type RepositoryConfiguration struct {
 	Options map[string]interface{}
 }
 
+type ServiceConfiguration struct {
+	Service string
+	URI     string
+}
+
 // AppConfiguration contains application specific data.
 type AppConfiguration struct {
 	Env        string
 	LogLevel   string `mapstructure:"log"`
 	Port       int    `mapstructure:"port"`
 	Repository *RepositoryConfiguration
+	Services   *[]ServiceConfiguration
 }
 
 // Validate performs basic validation on the contents of a configuration.
