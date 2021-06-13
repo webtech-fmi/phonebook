@@ -30,6 +30,7 @@ func (r *ProfileRepository) Add(p domain.Profile) error {
 			dbx.Params{
 				"id":            p.ID,
 				"user_id":       p.UserID,
+				"consent":       p.Consent,
 				"created_time":  p.CreatedTime,
 				"modified_time": p.ModifiedTime,
 				"email":         p.Email,
@@ -50,6 +51,7 @@ func (r *ProfileRepository) GetByID(id string) (*domain.Profile, error) {
 		Select(
 			"id",
 			"user_id",
+			"consent",
 			"created_time",
 			"modified_time",
 			"email",
@@ -79,6 +81,7 @@ func (r *ProfileRepository) GetByOwnerID(ownerID string) (*domain.Profile, error
 		Select(
 			"id",
 			"user_id",
+			"consent",
 			"created_time",
 			"modified_time",
 			"email",

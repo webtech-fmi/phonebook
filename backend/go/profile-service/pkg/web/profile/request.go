@@ -14,11 +14,13 @@ type CreateRequest struct {
 	FullName string `json:"full_name"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
+	Consent  bool   `json:"consent"`
 }
 
 func (cr *CreateRequest) Validate() error {
 	return ozzo.ValidateStruct(
 		cr,
+		ozzo.Field(&cr.Consent, ozzo.Required, ozzo.In(true)), // we cannot store profile data otherwise (should be impossible)
 		ozzo.Field(&cr.UserID, ozzo.Required, is.UUID),
 		ozzo.Field(&cr.FullName, ozzo.Required),
 		ozzo.Field(&cr.Email, ozzo.Required, is.Email),
@@ -31,6 +33,7 @@ func (cr *CreateRequest) ToProfile() (*domain.Profile, error) {
 
 	return &domain.Profile{
 		ID:           uuid.New(),
+		Consent:      cr.Consent,
 		UserID:       uuid.MustParse(cr.UserID),
 		CreatedTime:  &now,
 		ModifiedTime: &now,

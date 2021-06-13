@@ -111,7 +111,7 @@ func (r *ContactRepository) GetByOwnerID(ownerID string) ([]domain.Contact, erro
 	return contacts, nil
 }
 
-func (r *ContactRepository) Edit(id, owner_id string, newProfile domain.Contact) error {
+func (r *ContactRepository) Edit(id, owner_id string, newContact domain.Contact) error {
 	ID, err := uuid.Parse(id)
 	if err != nil {
 		return err
@@ -126,10 +126,10 @@ func (r *ContactRepository) Edit(id, owner_id string, newProfile domain.Contact)
 		contactsTable,
 		dbx.Params{
 			"modified_time": time.Now().UTC(),
-			"email":         newProfile.Email,
-			"personal":      newProfile.Personal,
-			"phone":         newProfile.Phone,
-			"metadata":      newProfile.Metadata,
+			"email":         newContact.Email,
+			"personal":      newContact.Personal,
+			"phone":         newContact.Phone,
+			"metadata":      newContact.Metadata,
 		},
 		dbx.And(
 			dbx.In("id", ID),

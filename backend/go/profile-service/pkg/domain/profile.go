@@ -18,6 +18,7 @@ type Repository interface {
 type Profile struct {
 	ID           uuid.UUID  `json:"id" db:"id"`
 	UserID       uuid.UUID  `json:"user_id" db:"user_id"`
+	Consent      bool       `json:"consent" db:"consent"`
 	CreatedTime  *time.Time `json:"created_time" db:"created_time"`
 	ModifiedTime *time.Time `json:"modified_time" db:"modified_time"`
 	Email        Contact    `json:"email" db:"email"`
