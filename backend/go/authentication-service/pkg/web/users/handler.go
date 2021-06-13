@@ -11,10 +11,6 @@ import (
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
 )
 
-const (
-	ErrCreateUserParam = "create_user_param"
-)
-
 // Handler is just a route collection
 type Handler struct{}
 

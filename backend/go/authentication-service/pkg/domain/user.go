@@ -47,14 +47,14 @@ func (m *Metadata) Scan(src interface{}) error {
 }
 
 type User struct {
-	ID           uuid.UUID  `db:"id"`
-	CreatedTime  *time.Time `db:"created_time"`
-	ModifiedTime *time.Time `db:"modified_time"`
-	Email        string     `db:"email"`
-	FullName     string     `db:"full_name"`
-	Password     string     `db:"password"`
-	Lock         *Lock      `db:"lock,omitempty"`
-	Metadata     Metadata   `db:"metadata"`
+	ID           uuid.UUID  `json:"id" db:"id"`
+	CreatedTime  *time.Time `json:"created_time" db:"created_time"`
+	ModifiedTime *time.Time `json:"modified_time" db:"modified_time"`
+	Email        string     `json:"email" db:"email"`
+	FullName     string     `json:"full_name" db:"full_name"`
+	Password     string     `json:"password" db:"password"`
+	Lock         *Lock      `json:"lock" db:"lock,omitempty"`
+	Metadata     Metadata   `json:"metadata" db:"metadata"`
 }
 
 func (u *User) ToSession() (*SessionInfo, error) {
