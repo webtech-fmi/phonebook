@@ -1,13 +1,8 @@
 package service
 
 import (
-	// "time"
-
-	// "github.com/google/uuid"
-
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
 	"github.com/webtech-fmi/phonebook/backend/go/profile-service/pkg/domain"
-	// "github.com/webtech-fmi/phonebook/backend/go/domain/vocabulary"
 )
 
 type ProfileService struct {
@@ -15,15 +10,28 @@ type ProfileService struct {
 	Logger     *log.Logger
 }
 
-func (s ProfileService) CreateProfile(name, date string) error {
-	// // hashing password
-	// now := time.Now().UTC()
-	// userID := uuid.New()
-	// // create lock
-	// newLock := &domain.Lock{}
+func (s *ProfileService) CreateProfile(payload domain.ProfilePayload) error {
+	profile, err := payload.ToProfile()
+	if err != nil {
+		return err
+	}
 
-	return s.Repository.Add(domain.Profile{
-		FullName:  name,
-		BirthDate: date,
-	})
+	return s.Repository.Add(*profile)
+}
+
+func (s *ProfileService) GetByOwnerID(ID string) (*domain.Profile, error) {
+	return s.Repository.GetByOwnerID(ID)
+}
+
+func (s *ProfileService) GetByID(ID string) (*domain.Profile, error) {
+	return s.Repository.GetByID(ID)
+}
+
+func (s *ProfileService) EditProfile(id string, payload domain.ProfilePayload) error {
+	profile, err := payload.ToProfile()
+	if err != nil {
+		return err
+	}
+
+	return s.Repository.Edit(id, *profile)
 }

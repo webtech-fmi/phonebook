@@ -1,63 +1,74 @@
 package profile
 
 import (
-	//	"net/http"
-
-	"fmt"
-
-	"github.com/webtech-fmi/phonebook/backend/go/profile-service/pkg/service"
+	"net/http"
 
 	routing "github.com/go-ozzo/ozzo-routing"
-	//	"github.com/go-ozzo/ozzo-routing/content"
-	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
-)
+	"github.com/go-ozzo/ozzo-routing/content"
 
-const (
-	// You decide if you want to wrap errors or
-	// will use values.
-	ErrCreateProfileParam = "create_profile_param"
+	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
+	"github.com/webtech-fmi/phonebook/backend/go/profile-service/pkg/service"
 )
 
 // Handler is just a route collection
 type Handler struct{}
 
-// // GetDemo Load a specific demo by ID - only "demo" will be found
-// func (h Handler) GetDemo(logger *zerolog.Logger, ds *service.DemoService) func(c *routing.Context) error {
-// 	return func(c *routing.Context) error {
-// 		ID := c.Query("id")
-// 		if ID == "" {
-// 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
-// 		}
+// GetByOwner - load profile by owner ID
+func (h Handler) GetByOwner(logger *log.Logger, ds *service.ProfileService) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
 
-// 		demo, err := ds.GetByID(ID)
-// 		if err != nil {
-// 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
-// 		}
-// 		w := content.JSONDataWriter{}
+		profile, err := ds.GetByOwnerID(ID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+		w := content.JSONDataWriter{}
 
-// 		return w.Write(c.Response, NewFetchResponse(*demo, ds))
-// 	}
-// }
+		return w.Write(c.Response, NewFetchResponse(*profile, ds))
+	}
+}
+
+// Get - load profile by ID
+func (h Handler) Get(logger *log.Logger, ds *service.ProfileService) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		profile, err := ds.GetByID(ID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+		w := content.JSONDataWriter{}
+
+		return w.Write(c.Response, NewFetchResponse(*profile, ds))
+	}
+}
 
 func (h Handler) CreateProfile(logger *log.Logger, ds *service.ProfileService) func(c *routing.Context) error {
 	return func(c *routing.Context) error {
 		request := CreateRequest{}
 
 		if err := c.Read(&request); err != nil {
-			return err
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		if err := ds.CreateProfile(request.Name, request.Date); err != nil {
-			return err
+		if err := ds.CreateProfile(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		fmt.Println(request)
+		c.Response.WriteHeader(http.StatusOK)
 		return nil
 	}
 }
 
 // Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ProfileService) {
-	//	api.Get("/demo", h.GetDemo(logger, ds))
+	api.Get("/by-owner", h.GetByOwner(logger, s))
+	api.Get("/by-id", h.Get(logger, s))
 	api.Post("/create", h.CreateProfile(logger, s))
 }

@@ -29,11 +29,6 @@ var serverCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// f := os.Stdout
-		// if appConfiguration.LogLevel == "error" {
-		// 	f = os.Stderr
-		// }
-
 		err = appConfiguration.Validate()
 		if err != nil {
 			fmt.Printf("error at configuration validation: [%s]", err.Error())
@@ -47,7 +42,7 @@ var serverCmd = &cobra.Command{
 		}
 
 		if err = web.LaunchServer(appConfiguration, logger); err != nil && err != http.ErrServerClosed {
-			logger.Fatal().Err(err).Msg("Error launching privacy service webserver")
+			logger.Fatal().Err(err).Msg("Error launching profile service webserver")
 		}
 	},
 }

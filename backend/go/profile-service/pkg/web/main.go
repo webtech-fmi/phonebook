@@ -32,7 +32,6 @@ func NewProfileRepository(ctx context.Context, cfg *configuration.AppConfigurati
 	}
 }
 
-
 func NewProfileService(r domain.Repository, logger *log.Logger) (*service.ProfileService, error) {
 	return &service.ProfileService{
 		Repository: r,
@@ -44,12 +43,12 @@ func NewProfileService(r domain.Repository, logger *log.Logger) (*service.Profil
 func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) *routing.Router {
 	profileRepository, err := NewProfileRepository(ctx, cfg, logger)
 	if err != nil {
-		logger.Fatal().Err(err).Msg("Could not instantiate the users repository")
+		logger.Fatal().Err(err).Msg("Could not instantiate the profile repository")
 	}
 
 	profileService, err := NewProfileService(profileRepository, logger)
 	if err != nil {
-		logger.Fatal().Err(err).Msg("Could not instantiate the demo service")
+		logger.Fatal().Err(err).Msg("Could not instantiate the profile service")
 	}
 
 	r := routing.New()
