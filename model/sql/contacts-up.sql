@@ -6,10 +6,8 @@ CREATE TABLE IF NOT EXISTS contacts
 	created_time TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
     modified_time TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
     favourite BOOLEAN DEFAULT FALSE,
-    email UUID
-		CONSTRAINT fk_contacts_contact_info REFERENCES contact_info (id),
+    email JSONB,
     personal JSONB,
-    phone UUID
-		CONSTRAINT fk_contacts_contact_info REFERENCES contact_info (id),
+    phone JSONB,
    	metadata JSONB
 );
