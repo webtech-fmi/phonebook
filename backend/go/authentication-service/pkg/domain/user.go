@@ -57,6 +57,13 @@ type User struct {
 	Metadata     Metadata   `db:"metadata"`
 }
 
+func (u *User) ToSession() (*SessionInfo, error) {
+	return &SessionInfo{
+		ID:    u.ID.String(),
+		Email: u.Email,
+	}, nil
+}
+
 // Credentials struct
 type Credentials struct {
 	Email  string
@@ -84,4 +91,9 @@ type UserPayload interface {
 // LockPayload interface
 type LockPayload interface {
 	ToLock() (*Lock, error)
+}
+
+// LoginPayload interface
+type LoginPayload interface {
+	ToCredentials() (*Credentials, error)
 }

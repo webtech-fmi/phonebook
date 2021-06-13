@@ -60,7 +60,7 @@ func (r *UserRepository) GetUserByID(id string) (*domain.User, error) {
 
 func (r *UserRepository) GetUserByCredentials(credentials domain.Credentials) (*domain.User, error) {
 	query := r.Adapter.DB.
-		Select("id", "email", "full_name", "lock").
+		Select("id", "email", "full_name", "lock", "password").
 		From(usersTable)
 
 	switch credentials.Type {

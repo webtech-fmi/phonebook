@@ -15,6 +15,9 @@ import (
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/infrastructure/storage"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/service"
+	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/web/login"
+	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/web/logout"
+	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/web/sessions"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/web/users"
 
 	routing "github.com/go-ozzo/ozzo-routing"
@@ -32,9 +35,26 @@ func NewUserRepository(ctx context.Context, cfg *configuration.AppConfiguration,
 	}
 }
 
-
 func NewUserService(r domain.Repository, logger *log.Logger) (*service.UserService, error) {
 	return &service.UserService{
+		Repository: r,
+		Logger:     logger,
+	}, nil
+}
+
+func NewSessionRepository(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) (domain.SessionRepository, error) {
+	switch cfg.Repository.Adapter {
+	// case "memory":
+	// 	return memory.NewRepository(ctx, cfg.Repository.Options, logger)
+	case "redis":
+		return storage.NewSessionRepository(cfg.Repository.Options)
+	default:
+		return nil, fmt.Errorf("unknown storage adapter: [%s]", cfg.Repository.Adapter)
+	}
+}
+
+func NewSessionService(r domain.SessionRepository, logger *log.Logger) (*service.SessionService, error) {
+	return &service.SessionService{
 		Repository: r,
 		Logger:     logger,
 	}, nil
@@ -52,11 +72,33 @@ func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger 
 		logger.Fatal().Err(err).Msg("Could not instantiate the user service")
 	}
 
+	sessionRepository, err := NewSessionRepository(ctx, cfg, logger)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("Could not instantiate the session repository")
+	}
+
+	sessionService, err := NewSessionService(sessionRepository, logger)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("Could not instantiate the session service")
+	}
+
 	r := routing.New()
 
 	usersAPI := r.Group("/users")
 	usersAPI.Use(content.TypeNegotiator(content.JSON))
 	users.Handler{}.Routes(usersAPI, logger, userService)
+
+	sessionAPI := r.Group("/sessions")
+	sessionAPI.Use(content.TypeNegotiator(content.JSON))
+	sessions.Handler{}.Routes(sessionAPI, logger, sessionService)
+
+	loginAPI := r.Group("/login")
+	loginAPI.Use(content.TypeNegotiator(content.JSON))
+	login.Handler{}.Routes(loginAPI, logger, userService, sessionService)
+
+	logoutAPI := r.Group("/logout")
+	logoutAPI.Use(content.TypeNegotiator(content.JSON))
+	logout.Handler{}.Routes(logoutAPI, logger, sessionService)
 
 	return r
 }
