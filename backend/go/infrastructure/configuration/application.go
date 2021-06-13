@@ -28,7 +28,7 @@ type AppConfiguration struct {
 func (c *AppConfiguration) Validate() error {
 	return ozzo.ValidateStruct(
 		c,
-		ozzo.Field(&c.Env, ozzo.Required, ozzo.In("acceptance", "development", "production", "test")),
+		ozzo.Field(&c.Env, ozzo.Required, ozzo.In("development", "production", "test")),
 		ozzo.Field(&c.Port, ozzo.Required, ozzo.Min(1), ozzo.Max(65535)),
 	)
 }

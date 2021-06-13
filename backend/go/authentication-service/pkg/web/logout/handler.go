@@ -34,7 +34,6 @@ func (h Handler) Logout(logger *log.Logger, ss *service.SessionService) func(c *
 	}
 }
 
-// Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, ss *service.SessionService) {
 	api.Post("/", h.Logout(logger, ss))
 }

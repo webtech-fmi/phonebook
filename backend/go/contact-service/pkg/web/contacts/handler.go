@@ -159,7 +159,6 @@ func (h Handler) MergeContacts(logger *log.Logger, ds *service.ContactService, h
 	}
 }
 
-// Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ContactService, hs *domain_service.HTTPServices) {
 	api.Get("/by-owner", h.GetByOwner(logger, s, hs))
 	api.Get("/by-id", h.Get(logger, s))

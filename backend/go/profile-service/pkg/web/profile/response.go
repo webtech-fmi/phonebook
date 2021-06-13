@@ -5,7 +5,6 @@ import (
 	"github.com/webtech-fmi/phonebook/backend/go/profile-service/pkg/service"
 )
 
-// FetchResponse is the shape of data for a loaded demo record
 type FetchResponse struct {
 	domain.Profile
 }

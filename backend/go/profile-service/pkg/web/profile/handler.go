@@ -104,7 +104,6 @@ func (h Handler) EditProfile(logger *log.Logger, ds *service.ProfileService, a a
 	}
 }
 
-// Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ProfileService, a authentication.Service) {
 	api.Get("/by-owner", h.GetByOwner(logger, s, a))
 	api.Get("/by-id", h.Get(logger, s))

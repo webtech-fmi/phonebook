@@ -35,7 +35,6 @@ func (h Handler) Valid(logger *log.Logger, s *service.SessionService) func(c *ro
 	}
 }
 
-// Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.SessionService) {
 	api.Post("/valid", h.Valid(logger, s))
 }

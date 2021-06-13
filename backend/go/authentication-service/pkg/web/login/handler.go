@@ -40,7 +40,6 @@ func (h Handler) Login(logger *log.Logger, us *service.UserService, ss *service.
 	}
 }
 
-// Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, us *service.UserService, ss *service.SessionService) {
 	api.Post("/", h.Login(logger, us, ss))
 }

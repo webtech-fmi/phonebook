@@ -5,7 +5,6 @@ import (
 	"github.com/webtech-fmi/phonebook/backend/go/contact-service/pkg/service"
 )
 
-// FetchResponse is the shape of data for a loaded demo record
 type FetchResponse struct {
 	domain.Contact
 }
@@ -15,7 +14,6 @@ func NewFetchResponse(d domain.Contact, _ *service.ContactService) *FetchRespons
 	return &FetchResponse{d}
 }
 
-// FetchResponse is the shape of data for a loaded demo record
 type FetchAllResponse struct {
 	Contacts []domain.Contact `json:"contacts"`
 }

@@ -115,7 +115,6 @@ func (h Handler) ResetPassword(logger *log.Logger, ds *service.UserService) func
 	}
 }
 
-// Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.UserService) {
 	api.Get("/get", h.GetUserByID(logger, s))
 	api.Post("/get", h.GetUserByCredentials(logger, s))
