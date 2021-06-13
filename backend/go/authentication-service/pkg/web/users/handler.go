@@ -39,7 +39,7 @@ func (h Handler) GetUserByCredentials(logger *log.Logger, ds *service.UserServic
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		if err := request.Validate(); err!=nil {
+		if err := request.Validate(); err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
@@ -93,10 +93,33 @@ func (h Handler) Lock(logger *log.Logger, ds *service.UserService) func(c *routi
 	}
 }
 
+func (h Handler) ResetPassword(logger *log.Logger, ds *service.UserService) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		request := ResetPasswordRequest{}
+		if err := c.Read(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		err := ds.ResetPassword(ID, request.Code, request.Password)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		w := content.JSONDataWriter{}
+		return w.Write(c.Response, NewStatusResponse("success"))
+	}
+}
+
 // Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.UserService) {
 	api.Get("/get", h.GetUserByID(logger, s))
 	api.Post("/get", h.GetUserByCredentials(logger, s))
 	api.Post("/create", h.CreateUser(logger, s))
 	api.Put("/lock", h.Lock(logger, s))
+	api.Put("/reset", h.ResetPassword(logger, s))
 }

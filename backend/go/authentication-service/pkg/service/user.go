@@ -70,6 +70,10 @@ func (s UserService) ResetPassword(id, code, newPassword string) error {
 		return err
 	}
 
+	if user.Lock == nil {
+		return errors.New("user has not been locked")
+	}
+
 	if user.Lock.Code != code {
 		return errors.New("invalid unlock code")
 	}
@@ -88,7 +92,7 @@ func (s UserService) ResetPassword(id, code, newPassword string) error {
 		return err
 	}
 
-	return s.Repository.SetLock(user.ID.String(), &domain.Lock{})
+	return s.Repository.SetLock(user.ID.String(), nil)
 }
 
 func (s UserService) LockUser(id string, payload domain.LockPayload) (*domain.User, error) {
@@ -125,7 +129,7 @@ func (s UserService) UnlockUser(id string, payload domain.LockPayload) error {
 		return errors.New("invalid unlock code")
 	}
 
-	return s.Repository.SetLock(user.ID.String(), &domain.Lock{})
+	return s.Repository.SetLock(user.ID.String(), nil)
 }
 
 func (s UserService) Login(payload domain.LoginPayload) (*domain.User, error) {

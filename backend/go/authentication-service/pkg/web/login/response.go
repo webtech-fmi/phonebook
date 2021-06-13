@@ -5,10 +5,10 @@ import (
 )
 
 type Response struct {
-	SessionID string `json:"session_id"`
+	domain.Session
 }
 
 // NewLoginResponse function
 func NewLoginResponse(s domain.Session) *Response {
-	return &Response{s.ID}
+	return &Response{s}
 }

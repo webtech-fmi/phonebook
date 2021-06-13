@@ -3,11 +3,12 @@ package users
 import (
 	"time"
 
-	"github.com/google/uuid"
+	"strings"
+
 	ozzo "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
+	"github.com/google/uuid"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
-	"strings"
 )
 
 type CreateRequest struct {
@@ -45,4 +46,17 @@ func (r *LockRequest) ToLock() (*domain.Lock, error) {
 		Code:        uuid.New().String(),
 		Reason:      r.Reason,
 	}, nil
+}
+
+type ResetPasswordRequest struct {
+	Password string `json:"password"`
+	Code     string `json:"code"`
+}
+
+func (cr *ResetPasswordRequest) Validate() error {
+	return ozzo.ValidateStruct(
+		cr,
+		ozzo.Field(&cr.Code, ozzo.Required),
+		ozzo.Field(&cr.Password, ozzo.Required, ozzo.Length(8, 32)),
+	)
 }
