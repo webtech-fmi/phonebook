@@ -47,3 +47,60 @@ func (s *ContactService) Unfavourite(id, owner_id string) error {
 func (s *ContactService) DeleteContact(id, owner_id string) error {
 	return s.Repository.Delete(id, owner_id)
 }
+
+
+func (s *ContactService) MergeContacts(id, owner_id string, to_merge []string) error {
+	newContact, err := s.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	uniqueMapPhones := uniqueMapContact{}
+	uniquePhones := uniqueContact{}
+
+	uniqueMapEmails := uniqueMapContact{}
+	uniqueEmails := uniqueContact{}
+
+	err = fillUniqueForContact(&uniqueMapPhones, &uniquePhones, "phone", newContact)
+	if err != nil {
+		return err
+	}
+
+	err = fillUniqueForContact(&uniqueMapEmails, &uniqueEmails, "email", newContact)
+	if err != nil {
+		return err
+	}
+
+	for _, currentID := range to_merge {
+		currentContact, err := s.GetByID(currentID)
+		if err != nil {
+			return err
+		}
+
+		err = fillUniqueForContact(&uniqueMapPhones, &uniquePhones, "phone", currentContact)
+		if err != nil {
+			return err
+		}
+
+		err = fillUniqueForContact(&uniqueMapEmails, &uniqueEmails, "email", currentContact)
+		if err != nil {
+			return err
+		}
+	}
+
+	// metadata & personal - no
+
+	newContact.Email = domain.ContactInfo{
+		Work:     uniqueEmails.Work,
+		Home:     uniqueEmails.Home,
+		Personal: uniqueEmails.Personal,
+	}
+
+	newContact.Phone = domain.ContactInfo{
+		Work:     uniquePhones.Work,
+		Home:     uniquePhones.Home,
+		Personal: uniquePhones.Personal,
+	}
+
+	return s.Repository.Merge(*newContact, to_merge)
+}

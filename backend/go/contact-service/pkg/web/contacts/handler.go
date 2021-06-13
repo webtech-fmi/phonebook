@@ -93,10 +93,38 @@ func (h Handler) EditContact(logger *log.Logger, ds *service.ContactService) fun
 	}
 }
 
+func (h Handler) MergeContacts(logger *log.Logger, ds *service.ContactService) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		ownerID := c.Query("owner_id")
+		if ownerID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty owner ID")
+		}
+
+		request := MergeRequest{}
+
+		if err := c.Read(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		if err := ds.MergeContacts(ID, ownerID, request.Contacts); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		c.Response.WriteHeader(http.StatusOK)
+		return nil
+	}
+}
+
 // Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ContactService) {
 	api.Get("/by-owner", h.GetByOwner(logger, s))
 	api.Get("/by-id", h.Get(logger, s))
 	api.Post("/create", h.CreateContact(logger, s))
 	api.Post("/edit", h.EditContact(logger, s))
+	api.Post("/merge", h.MergeContacts(logger, s))
 }

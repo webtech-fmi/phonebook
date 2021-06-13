@@ -203,6 +203,46 @@ func (r *ContactRepository) Delete(id, owner_id string) error {
 	return err
 }
 
+func (r *ContactRepository) Merge(toMerge domain.Contact, toDelete []string) error {
+	return r.Adapter.DB.Transactional(func(tx *dbx.Tx) error {
+		var err error
+
+		_, err = tx.Update(
+			contactsTable,
+			dbx.Params{
+				"modified_time": time.Now().UTC(),
+				"email":         toMerge.Email,
+				"personal":      toMerge.Personal,
+				"phone":         toMerge.Phone,
+				"metadata":      toMerge.Metadata,
+			},
+			dbx.And(
+				dbx.In("id", toMerge.ID),
+				dbx.In("status", string(vocabulary.Active)),
+			),
+		).Execute()
+		if err != nil {
+			return err
+		}
+
+		for _, current := range toDelete {
+			_, err = tx.Update(
+				contactsTable,
+				dbx.Params{
+					"status": string(vocabulary.Archived),
+				},
+				dbx.And(
+					dbx.In("id", current),
+				),
+			).Execute()
+			if err != nil {
+				return err
+			}
+		}
+		return err
+	})
+}
+
 // NewRepository creates a PSQL implementation of a secrets repository
 func NewRepository(ctx context.Context, options map[string]interface{}, logger *log.Logger) (*ContactRepository, error) {
 	adapter, err := storage.NewPSQL(ctx, options, logger)

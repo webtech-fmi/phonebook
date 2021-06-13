@@ -61,3 +61,7 @@ func (cr *EditRequest) ToContact() (*domain.Contact, error) {
 		Metadata:     cr.Metadata,
 	}, nil
 }
+
+type MergeRequest struct {
+	Contacts []string `json:"contacts"`
+}

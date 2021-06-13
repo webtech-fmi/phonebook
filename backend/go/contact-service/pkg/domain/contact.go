@@ -17,6 +17,7 @@ type Repository interface {
 	Delete(string, string) error
 	AddToFavourites(string, string) error
 	RemoveFromFavourites(string, string) error
+	Merge(Contact, []string) error
 }
 
 type Contact struct {
