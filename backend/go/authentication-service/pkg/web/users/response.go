@@ -12,7 +12,7 @@ type FetchResponse struct {
 
 // CreateResponse contains the ID post demo creation
 type CreateResponse struct {
-	ID string
+	ID string `json:"id"`
 }
 
 // NewFetchResponse instantiate a new response post load
@@ -21,6 +21,6 @@ func NewFetchResponse(d domain.User, _ *service.UserService) *FetchResponse {
 }
 
 // NewCreateResponse instantiates a new response when demo is created
-func NewCreateResponse(d domain.User, _ *service.UserService) *CreateResponse {
-	return &CreateResponse{ID: "demo"}
+func NewCreateResponse(id string, _ *service.UserService) *CreateResponse {
+	return &CreateResponse{ID: id}
 }

@@ -3,8 +3,8 @@ package users
 import (
 	"net/http"
 
-	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/service"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
+	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/service"
 
 	routing "github.com/go-ozzo/ozzo-routing"
 	"github.com/go-ozzo/ozzo-routing/content"
@@ -61,13 +61,13 @@ func (h Handler) CreateUser(logger *log.Logger, ds *service.UserService) func(c 
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		_, err := ds.CreateUser(&request)
+		id, err := ds.CreateUser(&request)
 		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		c.Response.WriteHeader(http.StatusOK)
-		return nil
+		w := content.JSONDataWriter{}
+		return w.Write(c.Response, NewCreateResponse(id, ds))
 	}
 }
 
