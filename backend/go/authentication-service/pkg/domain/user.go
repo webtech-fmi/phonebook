@@ -53,7 +53,7 @@ type User struct {
 	Email        string     `json:"email" db:"email"`
 	FullName     string     `json:"full_name" db:"full_name"`
 	Password     string     `json:"password" db:"password"`
-	Lock         *Lock      `json:"lock" db:"lock,omitempty"`
+	Lock         *Lock      `json:"lock" db:"lock"`
 	Metadata     Metadata   `json:"metadata" db:"metadata"`
 }
 
