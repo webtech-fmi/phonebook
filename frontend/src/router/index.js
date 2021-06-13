@@ -36,6 +36,11 @@ const routes = [
     name: 'AddContact',
     component: AddContact,
   },
+  {
+    path: '/contact/:id',
+    name: 'Contact',
+    component: Contact,
+  },
 ];
 
 const router = createRouter({
