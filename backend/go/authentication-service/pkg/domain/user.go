@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"time"
 
+	ozzo "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/uuid"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/storage"
 )
@@ -11,6 +12,9 @@ import (
 type Repository interface {
 	Add(User) error
 	GetUserByID(string) (*User, error)
+	GetUserByCredentials(Credentials) (*User, error)
+	SetPassword(string, string) error
+	SetLock(string, *Lock) error
 }
 
 type Lock struct {
@@ -50,6 +54,29 @@ type User struct {
 	Password     string     `db:"password"`
 	Lock         *Lock      `db:"lock,omitempty"`
 	Metadata     Metadata   `db:"metadata"`
+}
+
+type CredentialsType string
+
+const (
+	CredentialsPassword = CredentialsType("password")
+	CredentialsLock     = CredentialsType("lock")
+)
+
+// Credentials struct
+type Credentials struct {
+	Email  string
+	Secret string
+	Type   CredentialsType
+}
+
+func (cr *Credentials) Validate() error {
+	return ozzo.ValidateStruct(
+		cr,
+		ozzo.Field(&cr.Email, ozzo.Required),
+		ozzo.Field(&cr.Secret, ozzo.Required),
+		ozzo.Field(&cr.Type, ozzo.Required, ozzo.In(CredentialsPassword, CredentialsLock)),
+	)
 }
 
 // UserPayload interface

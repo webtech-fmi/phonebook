@@ -24,6 +24,7 @@ func (s UserService) CreateUser(payload domain.UserPayload) (string, error) {
 	createdTime := time.Now().UTC()
 	newUser.ID = uuid.New()
 	newUser.CreatedTime = &createdTime
+	newUser.ModifiedTime = &createdTime
 
 	hashedPassword, err := auth.HashPassword(newUser.Password)
 	if err != nil {
@@ -37,4 +38,12 @@ func (s UserService) CreateUser(payload domain.UserPayload) (string, error) {
 	}
 
 	return newUser.ID.String(), nil
+}
+
+func (s UserService) GetByID(id string) (*domain.User, error) {
+	return s.Repository.GetUserByID(id)
+}
+
+func (s UserService) GetByCredentials(credentials domain.Credentials) (*domain.User, error) {
+	return s.Repository.GetUserByCredentials(credentials)
 }
