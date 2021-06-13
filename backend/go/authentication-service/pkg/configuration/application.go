@@ -16,19 +16,29 @@ type RepositoryConfiguration struct {
 	Options map[string]interface{}
 }
 
+type UserConfiguration struct {
+	Repository RepositoryConfiguration
+}
+
+type SessionConfiguration struct {
+	Repository RepositoryConfiguration
+	Options    map[string]interface{}
+}
+
 // AppConfiguration contains application specific data.
 type AppConfiguration struct {
-	Env        string
-	LogLevel   string `mapstructure:"log"`
-	Port       int    `mapstructure:"port"`
-	Repository *RepositoryConfiguration
+	Env      string
+	LogLevel string `mapstructure:"log"`
+	Port     int    `mapstructure:"port"`
+	User     *UserConfiguration
+	Session  *SessionConfiguration
 }
 
 // Validate performs basic validation on the contents of a configuration.
 func (c *AppConfiguration) Validate() error {
 	return ozzo.ValidateStruct(
 		c,
-		ozzo.Field(&c.Env, ozzo.Required, ozzo.In("acceptance", "development", "production", "test")),
+		ozzo.Field(&c.Env, ozzo.Required, ozzo.In("development", "production", "test")),
 		ozzo.Field(&c.Port, ozzo.Required, ozzo.Min(1), ozzo.Max(65535)),
 	)
 }

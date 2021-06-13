@@ -77,7 +77,7 @@ func (s *SessionService) Terminate(id string) error {
 	return s.Repository.DeleteSession(*session)
 }
 
-func NewService(repository domain.SessionRepository, options map[string]interface{}) (*SessionService, error) {
+func NewSessionService(repository domain.SessionRepository, options map[string]interface{}) (*SessionService, error) {
 	duration, ok := options["duration"].(int) // in seconds
 	if !ok {
 		return nil, errors.New("missing duration")

@@ -25,13 +25,13 @@ import (
 )
 
 func NewUserRepository(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) (domain.Repository, error) {
-	switch cfg.Repository.Adapter {
+	switch cfg.User.Repository.Adapter {
 	// case "memory":
 	// 	return memory.NewRepository(ctx, cfg.Repository.Options, logger)
 	case "psql":
-		return storage.NewRepository(ctx, cfg.Repository.Options, logger)
+		return storage.NewRepository(ctx, cfg.User.Repository.Options, logger)
 	default:
-		return nil, fmt.Errorf("unknown storage adapter: [%s]", cfg.Repository.Adapter)
+		return nil, fmt.Errorf("unknown storage adapter: [%s]", cfg.User.Repository.Adapter)
 	}
 }
 
@@ -42,22 +42,19 @@ func NewUserService(r domain.Repository, logger *log.Logger) (*service.UserServi
 	}, nil
 }
 
-func NewSessionRepository(ctx context.Context, cfg *configuration.AppConfiguration, logger *log.Logger) (domain.SessionRepository, error) {
-	switch cfg.Repository.Adapter {
+func NewSessionRepository(ctx context.Context, cfg *configuration.AppConfiguration) (domain.SessionRepository, error) {
+	switch cfg.Session.Repository.Adapter {
 	// case "memory":
 	// 	return memory.NewRepository(ctx, cfg.Repository.Options, logger)
 	case "redis":
-		return storage.NewSessionRepository(cfg.Repository.Options)
+		return storage.NewSessionRepository(cfg.Session.Repository.Options)
 	default:
-		return nil, fmt.Errorf("unknown storage adapter: [%s]", cfg.Repository.Adapter)
+		return nil, fmt.Errorf("unknown storage adapter: [%s]", cfg.Session.Repository.Adapter)
 	}
 }
 
-func NewSessionService(r domain.SessionRepository, logger *log.Logger) (*service.SessionService, error) {
-	return &service.SessionService{
-		Repository: r,
-		Logger:     logger,
-	}, nil
+func NewSessionService(r domain.SessionRepository, cfg *configuration.AppConfiguration) (*service.SessionService, error) {
+	return service.NewSessionService(r, cfg.Session.Options)
 }
 
 // NewRouter creates a mux with mounted routes and instantiates respective dependencies.
@@ -72,12 +69,12 @@ func NewRouter(ctx context.Context, cfg *configuration.AppConfiguration, logger 
 		logger.Fatal().Err(err).Msg("Could not instantiate the user service")
 	}
 
-	sessionRepository, err := NewSessionRepository(ctx, cfg, logger)
+	sessionRepository, err := NewSessionRepository(ctx, cfg)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("Could not instantiate the session repository")
 	}
 
-	sessionService, err := NewSessionService(sessionRepository, logger)
+	sessionService, err := NewSessionService(sessionRepository, cfg)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("Could not instantiate the session service")
 	}

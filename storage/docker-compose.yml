@@ -5,20 +5,18 @@ services:
     build: .
     restart: always
     ports:
-      - "127.0.0.1:5432:5432"
+      - '127.0.0.1:5432:5432'
     volumes:
       - ./storage:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: "root"
-      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'root'
     mem_limit: 512m
     memswap_limit: 512m
     cpus: 0.5
   redis:
-    image: redis:latest
+    image: 'redis:latest'
     restart: always
     ports:
-      - 6379:6379
-    volumes:
-      - ./config/redis.conf:/redis.conf
-    command: [ "redis-server", "/redis.conf" ]
+      - '6379:6379'
+    command: 'redis-server --requirepass root'
