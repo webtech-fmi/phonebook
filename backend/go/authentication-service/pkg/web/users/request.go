@@ -1,6 +1,9 @@
 package users
 
 import (
+	"time"
+
+	"github.com/google/uuid"
 	ozzo "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
@@ -28,5 +31,18 @@ func (cr *CreateRequest) ToUser() (*domain.User, error) {
 		Password: cr.Password,
 		FullName: cr.FullName,
 		Metadata: domain.Metadata{},
+	}, nil
+}
+
+type LockRequest struct {
+	Reason string `json:"reason"`
+}
+
+func (r *LockRequest) ToLock() (*domain.Lock, error) {
+	now := time.Now().UTC()
+	return &domain.Lock{
+		CreatedTime: &now,
+		Code:        uuid.New().String(),
+		Reason:      r.Reason,
 	}, nil
 }

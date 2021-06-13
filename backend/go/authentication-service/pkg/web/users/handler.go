@@ -75,9 +75,32 @@ func (h Handler) CreateUser(logger *log.Logger, ds *service.UserService) func(c 
 	}
 }
 
+func (h Handler) Lock(logger *log.Logger, ds *service.UserService) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		request := LockRequest{}
+		if err := c.Read(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		user, err := ds.LockUser(ID, &request)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		w := content.JSONDataWriter{}
+		return w.Write(c.Response, NewFetchResponse(*user, ds))
+	}
+}
+
 // Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.UserService) {
 	api.Get("/get", h.GetUserByID(logger, s))
 	api.Post("/get", h.GetUserByCredentials(logger, s))
 	api.Post("/create", h.CreateUser(logger, s))
+	api.Put("/lock", h.Lock(logger, s))
 }

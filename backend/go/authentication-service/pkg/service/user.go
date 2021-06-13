@@ -95,18 +95,23 @@ func (s UserService) ResetPassword(id, code, newPassword string) error {
 	return s.Repository.SetLock(user.ID.String(), &domain.Lock{})
 }
 
-func (s UserService) LockUser(id string, payload domain.LockPayload) error {
+func (s UserService) LockUser(id string, payload domain.LockPayload) (*domain.User, error) {
 	user, err := s.Repository.GetUserByID(id)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	lock, err := payload.ToLock()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return s.Repository.SetLock(user.ID.String(), lock)
+	err = s.Repository.SetLock(user.ID.String(), lock)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (s UserService) UnlockUser(id string, payload domain.LockPayload) error {
