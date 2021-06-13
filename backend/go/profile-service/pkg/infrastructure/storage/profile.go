@@ -25,16 +25,18 @@ type ProfileRepository struct {
 
 func (r *ProfileRepository) Add(p domain.Profile) error {
 	_, err := r.Adapter.DB.
-		Insert("profiles", dbx.Params{
-			"id":            p.ID,
-			"user_id":       p.UserID,
-			"created_time":  p.CreatedTime,
-			"modified_time": p.ModifiedTime,
-			"email":         p.Email,
-			"personal":      p.Personal,
-			"phone":         p.Phone,
-			"metadata":      p.Metadata,
-		}).Execute()
+		Insert(
+			profilesTable,
+			dbx.Params{
+				"id":            p.ID,
+				"user_id":       p.UserID,
+				"created_time":  p.CreatedTime,
+				"modified_time": p.ModifiedTime,
+				"email":         p.Email,
+				"personal":      p.Personal,
+				"phone":         p.Phone,
+				"metadata":      p.Metadata,
+			}).Execute()
 	return err
 }
 
@@ -85,7 +87,7 @@ func (r *ProfileRepository) GetByOwnerID(ownerID string) (*domain.Profile, error
 			"metadata",
 		).
 		From(profilesTable).
-		Where(dbx.In("owner_id", ID))
+		Where(dbx.In("user_id", ID))
 
 	var profile domain.Profile
 	err = query.One(&profile)

@@ -16,14 +16,14 @@ type Repository interface {
 }
 
 type Profile struct {
-	ID           uuid.UUID  `db:"id"`
-	UserID       uuid.UUID  `db:"user_id"`
-	CreatedTime  *time.Time `db:"created_time"`
-	ModifiedTime *time.Time `db:"modified_time"`
-	Email        Contact    `db:"email"`
-	Personal     Personal   `db:"personal"`
-	Phone        Contact    `db:"phone"`
-	Metadata     Metadata   `db:"metadata"`
+	ID           uuid.UUID  `json:"id" db:"id"`
+	UserID       uuid.UUID  `json:"user_id" db:"user_id"`
+	CreatedTime  *time.Time `json:"created_time" db:"created_time"`
+	ModifiedTime *time.Time `json:"modified_time" db:"modified_time"`
+	Email        Contact    `json:"email" db:"email"`
+	Personal     Personal   `json:"personal" db:"personal"`
+	Phone        Contact    `json:"phone" db:"phone"`
+	Metadata     Metadata   `json:"metadata" db:"metadata"`
 }
 
 type ProfilePayload interface {

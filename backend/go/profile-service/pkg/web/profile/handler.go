@@ -66,9 +66,32 @@ func (h Handler) CreateProfile(logger *log.Logger, ds *service.ProfileService) f
 	}
 }
 
+func (h Handler) EditProfile(logger *log.Logger, ds *service.ProfileService) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		request := EditRequest{}
+
+		if err := c.Read(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		if err := ds.EditProfile(ID, &request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		c.Response.WriteHeader(http.StatusOK)
+		return nil
+	}
+}
+
 // Routes for demo create/read
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ProfileService) {
 	api.Get("/by-owner", h.GetByOwner(logger, s))
 	api.Get("/by-id", h.Get(logger, s))
 	api.Post("/create", h.CreateProfile(logger, s))
+	api.Post("/edit", h.EditProfile(logger, s))
 }
