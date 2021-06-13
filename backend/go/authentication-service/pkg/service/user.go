@@ -47,3 +47,31 @@ func (s UserService) GetByID(id string) (*domain.User, error) {
 func (s UserService) GetByCredentials(credentials domain.Credentials) (*domain.User, error) {
 	return s.Repository.GetUserByCredentials(credentials)
 }
+
+func (s UserService) SetPassword(id, newPassword string) error {
+	user, err := s.Repository.GetUserByID(id)
+	if err != nil {
+		return err
+	}
+
+	hashedPassword, err := auth.HashPassword(newPassword)
+	if err != nil {
+		return err
+	}
+
+	return s.Repository.SetPassword(user.ID.String(), hashedPassword)
+}
+
+func (s UserService) LockUser(id string, payload domain.LockPayload) error {
+	user, err := s.Repository.GetUserByID(id)
+	if err != nil {
+		return err
+	}
+
+	lock, err := payload.ToLock()
+	if err != nil {
+		return err
+	}
+
+	return s.Repository.SetLock(user.ID.String(), lock)
+}

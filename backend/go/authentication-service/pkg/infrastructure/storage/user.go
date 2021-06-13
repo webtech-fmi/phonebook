@@ -3,10 +3,12 @@ package storage
 import (
 	"context"
 	"fmt"
+	"time"
 
 	dbx "github.com/go-ozzo/ozzo-dbx"
 	"github.com/google/uuid"
 	"github.com/webtech-fmi/phonebook/backend/go/authentication-service/pkg/domain"
+	"github.com/webtech-fmi/phonebook/backend/go/domain/vocabulary"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/log"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/storage"
 )
@@ -62,11 +64,11 @@ func (r *UserRepository) GetUserByCredentials(credentials domain.Credentials) (*
 		From(usersTable)
 
 	switch credentials.Type {
-	case domain.CredentialsPassword:
+	case vocabulary.CredentialsPassword:
 		query = query.Where(
-				dbx.NewExp("lock->>'reason' IS NULL AND lock->>'code' IS NULL"),
+			dbx.NewExp("lock->>'reason' IS NULL AND lock->>'code' IS NULL"),
 		)
-	case domain.CredentialsLock:
+	case vocabulary.CredentialsLock:
 		query = query.Where(
 			dbx.In("lock->>'code'", credentials.Secret),
 		)
@@ -84,11 +86,29 @@ func (r *UserRepository) GetUserByCredentials(credentials domain.Credentials) (*
 }
 
 func (r *UserRepository) SetPassword(id, password string) error {
-	return nil
+	_, err := r.Adapter.DB.Update(
+		usersTable,
+		dbx.Params{
+			"modified_time": time.Now().UTC(),
+			"password":      password,
+		},
+		dbx.In("id", id),
+	).Execute()
+
+	return err
 }
 
 func (r *UserRepository) SetLock(id string, lock *domain.Lock) error {
-	return nil
+	_, err := r.Adapter.DB.Update(
+		usersTable,
+		dbx.Params{
+			"modified_time": time.Now().UTC(),
+			"lock":          lock,
+		},
+		dbx.In("id", id),
+	).Execute()
+
+	return err
 }
 
 // NewRepository creates a PSQL implementation of a secrets repository

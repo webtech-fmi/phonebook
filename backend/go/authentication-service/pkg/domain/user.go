@@ -6,6 +6,7 @@ import (
 
 	ozzo "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/uuid"
+	"github.com/webtech-fmi/phonebook/backend/go/domain/vocabulary"
 	"github.com/webtech-fmi/phonebook/backend/go/infrastructure/storage"
 )
 
@@ -56,18 +57,11 @@ type User struct {
 	Metadata     Metadata   `db:"metadata"`
 }
 
-type CredentialsType string
-
-const (
-	CredentialsPassword = CredentialsType("password")
-	CredentialsLock     = CredentialsType("lock")
-)
-
 // Credentials struct
 type Credentials struct {
 	Email  string
 	Secret string
-	Type   CredentialsType
+	Type   vocabulary.CredentialsType
 }
 
 func (cr *Credentials) Validate() error {
@@ -75,11 +69,19 @@ func (cr *Credentials) Validate() error {
 		cr,
 		ozzo.Field(&cr.Email, ozzo.Required),
 		ozzo.Field(&cr.Secret, ozzo.Required),
-		ozzo.Field(&cr.Type, ozzo.Required, ozzo.In(CredentialsPassword, CredentialsLock)),
+		ozzo.Field(&cr.Type, ozzo.Required, ozzo.In(
+			vocabulary.CredentialsPassword,
+			vocabulary.CredentialsLock,
+		)),
 	)
 }
 
 // UserPayload interface
 type UserPayload interface {
 	ToUser() (*User, error)
+}
+
+// LockPayload interface
+type LockPayload interface {
+	ToLock() (*Lock, error)
 }
