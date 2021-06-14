@@ -1,0 +1,22 @@
+user:
+  repository:
+    adapter: psql
+    options:
+      host: localhost
+      port: 5432
+      dbname: postgres
+      username: root
+      password: root
+      max_idle: 2
+      max_open: 5
+      sslmode: disable
+      debug: false
+session:
+  repository:
+    adapter: redis
+    options:
+      addr: localhost:6379
+      password: root
+      db: 1
+  options:
+    duration: 86400
