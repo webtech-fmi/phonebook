@@ -1,121 +1,119 @@
 <template>
-  <div class='background'>
-    <div class='header'>
+  <div class="background">
+    <div class="header">
       <el-button
-        class='back-button'
-        type='primary'
-        icon='el-icon-arrow-left'
-        @click='$router.push(`/allcontacts`)'
+        class="back-button"
+        type="primary"
+        icon="el-icon-arrow-left"
+        @click="$router.push(`/allcontacts`)"
         >Back</el-button
       >
-      <h3 class='header-text'>Add Contact</h3>
+      <h3 class="header-text">Add Contact</h3>
     </div>
-    <div class='avatar'>
+    <div class="avatar">
       <el-avatar
-        class='avatar-image'
-        :size='large'
-        src='https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+        class="avatar-image"
+        :size="large"
+        src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
       >
       </el-avatar>
-      <el-upload class='upload-demo' :limit='1' accept='image/png image/jpeg'>
+      <el-upload class="upload-demo" :limit="1" accept="image/png image/jpeg">
         <el-button
-          class='add-avatar-button'
-          icon='el-icon-circle-plus'
+          class="add-avatar-button"
+          icon="el-icon-circle-plus"
           circle
         ></el-button>
       </el-upload>
     </div>
-    <div class='form'>
+    <div class="form">
       <el-input
-        class='input-field'
-        placeholder='Name'
-        prefix-icon='el-icon-user-solid'
-        v-model='contact.name'
+        class="input-field"
+        placeholder="Name"
+        prefix-icon="el-icon-user-solid"
+        v-model="contact.name"
       >
         {{ contact.name }}
       </el-input>
-      <el-input
-        class='input-field'
-        placeholder='Email'
-        prefix-icon='el-icon-printer'
-        v-model='contact.email'
-      >
-        {{ contact.email }}
-      </el-input>
-      <div v-for='(workPhone, index) in contact.phones.workPhones' :key='index'>
-        <el-input
-          class='input-field'
-          placeholder='Work phone'
-          prefix-icon='el-icon-s-cooperation'
-          v-model='contact.phones.workPhone'
+      <div v-for="(emailType, i) in contact.email" :key="i">
+        <div v-for="(emailPhone, index) in emailType" :key="index">
+          <el-input
+            class="input-field"
+            :placeholder="i"
+            prefix-icon="el-icon-printer"
+            v-model="emailType[index]"
+          >
+          </el-input>
+        </div>
+        <el-button class="save-button" @click="AddElemToEmails(i)"
+          >Add {{ i }}</el-button
         >
-          {{ contact.phones.workPhone }}
-        </el-input>
       </div>
-      <el-button class='save-button' @click='AddElemToPhones(`work`)'
-        >Add Work Phone</el-button
-      >
-      <div v-for='(homePhone, index) in contact.phones.homePhones' :key='index'>
-        <el-input
-          class='input-field'
-          placeholder='Mobile phone'
-          prefix-icon='el-icon-mobile-phone'
-          v-model='contact.phones.homePhone'
+
+      <div v-for="(phoneType, i) in contact.phone" :key="i">
+        <div v-for="(workPhone, index) in phoneType" :key="index">
+          <el-input
+            class="input-field"
+            :placeholder="i"
+            prefix-icon="el-icon-s-cooperation"
+            v-model="phoneType[index]"
+          >
+          </el-input>
+        </div>
+        <el-button class="save-button" @click="AddElemToPhones(i)"
+          >Add {{ i }}</el-button
         >
-          {{ contact.phones.homePhone }}
-        </el-input>
       </div>
-      <el-button class='save-button' @click='AddElemToPhones(`home`)'
-        >Add Home Phone</el-button
-      >
-      <div
-        v-for='(mobilePhone, index) in contact.phones.mobilePhones'
-        :key='index'
-      >
-        <el-input
-          class='input-field'
-          placeholder='Home phone'
-          prefix-icon='el-icon-phone'
-          v-model='contact.phones.mobilePhone'
-        >
-          {{ contact.phones.mobilePhone }}
-        </el-input>
-      </div>
-      <el-button class='save-button' @click='AddElemToPhones(`mobile`)'
-        >Add Mobile Phone</el-button
-      >
     </div>
-    <el-button class='save-button'>Save</el-button>
+    <el-button class="save-button">Save</el-button>
     <br />
-    <img class='footer-image' src='../assets/add-contact-image.svg' />
+    <img class="footer-image" src="../assets/add-contact-image.svg" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AddContact',
+  name: "AddContact",
   data: () => ({
     contact: {
-      name: '',
-      email: '',
-      phones: {
-        workPhones: ['0'],
-        homePhones: ['0'],
-        mobilePhones: ['0'],
+      name: "",
+      email: {
+        workEmail: [""],
+        homeEmail: [""],
+        mobileEmail: [""],
+      },
+      phone: {
+        workPhone: [""],
+        homePhone: [""],
+        mobilePhone: [""],
       },
     },
   }),
   methods: {
     AddElemToPhones(group) {
       switch (group) {
-        case 'work':
-          this.contact.phones.workPhones.push('');
+        case "workPhone":
+          this.contact.phone.workPhone.push("");
           break;
-        case 'home':
-          this.contact.phones.homePhones.push('');
+        case "homePhone":
+          this.contact.phone.homePhone.push("");
           break;
-        case 'mobile':
-          this.contact.phones.mobilePhones.push('');
+        case "mobilePhone":
+          this.contact.phone.mobilePhone.push("");
+          break;
+        default:
+          break;
+      }
+    },
+    AddElemToEmails(group) {
+      switch (group) {
+        case "workEmail":
+          this.contact.email.workEmail.push("");
+          break;
+        case "homeEmail":
+          this.contact.email.homeEmail.push("");
+          break;
+        case "mobileEmail":
+          this.contact.email.mobileEmail.push("");
           break;
         default:
           break;
@@ -128,7 +126,7 @@ export default {
 <style scoped>
 .background {
   height: 100vh;
-  background-image: url('../assets/background.svg');
+  background-image: url("../assets/background.svg");
   background-size: 100%;
 }
 .header {
