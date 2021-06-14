@@ -18,11 +18,7 @@
       >
       </el-avatar>
       <el-upload class="upload-demo" :limit="1" accept="image/png image/jpeg">
-        <el-button
-          class="add-avatar-button"
-          icon="el-icon-circle-plus"
-          circle
-        ></el-button>
+        <el-button class="add-avatar-button" icon="el-icon-circle-plus" circle></el-button>
       </el-upload>
     </div>
     <div class="form">
@@ -30,9 +26,9 @@
         class="input-field"
         placeholder="Name"
         prefix-icon="el-icon-user-solid"
-        v-model="contact.name"
+        v-model="contact.personal.full_name"
       >
-        {{ contact.name }}
+        {{ contact.personal.full_name }}
       </el-input>
       <div v-for="(emailType, i) in contact.email" :key="i">
         <div v-for="(emailPhone, index) in emailType" :key="index">
@@ -44,13 +40,11 @@
           >
           </el-input>
         </div>
-        <el-button class="save-button" @click="AddElemToEmails(i)"
-          >Add {{ i }}</el-button
-        >
+        <el-button class="save-button" @click="AddElemToEmails(i)">Add {{ i }}</el-button>
       </div>
 
       <div v-for="(phoneType, i) in contact.phone" :key="i">
-        <div v-for="(workPhone, index) in phoneType" :key="index">
+        <div v-for="(work, index) in phoneType" :key="index">
           <el-input
             class="input-field"
             :placeholder="i"
@@ -59,46 +53,47 @@
           >
           </el-input>
         </div>
-        <el-button class="save-button" @click="AddElemToPhones(i)"
-          >Add {{ i }}</el-button
-        >
+        <el-button class="save-button" @click="AddElemToPhones(i)">Add {{ i }}</el-button>
       </div>
     </div>
-    <el-button class="save-button">Save</el-button>
+    <el-button class="save-button" @click="createContact">Save</el-button>
     <br />
     <img class="footer-image" src="../assets/add-contact-image.svg" />
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "AddContact",
   data: () => ({
     contact: {
-      name: "",
+      personal: {
+        full_name: ""
+      },
       email: {
-        workEmail: [""],
-        homeEmail: [""],
-        mobileEmail: [""],
+        work: [],
+        personal: []
       },
       phone: {
-        workPhone: [""],
-        homePhone: [""],
-        mobilePhone: [""],
-      },
-    },
+        work: [],
+        home: [],
+        personal: []
+      }
+    }
   }),
   methods: {
     AddElemToPhones(group) {
       switch (group) {
-        case "workPhone":
-          this.contact.phone.workPhone.push("");
+        case "work":
+          this.contact.phone.work.push("");
           break;
-        case "homePhone":
-          this.contact.phone.homePhone.push("");
+        case "home":
+          this.contact.phone.home.push("");
           break;
-        case "mobilePhone":
-          this.contact.phone.mobilePhone.push("");
+        case "personal":
+          this.contact.phone.personal.push("");
           break;
         default:
           break;
@@ -106,20 +101,29 @@ export default {
     },
     AddElemToEmails(group) {
       switch (group) {
-        case "workEmail":
-          this.contact.email.workEmail.push("");
+        case "work":
+          this.contact.email.work.push("");
           break;
-        case "homeEmail":
-          this.contact.email.homeEmail.push("");
-          break;
-        case "mobileEmail":
-          this.contact.email.mobileEmail.push("");
+        case "personal":
+          this.contact.email.personal.push("");
           break;
         default:
           break;
       }
     },
-  },
+    async createContact() {
+      const contactPayload = JSON.stringify(this.contact);
+      try {
+        const res = await axios.post(
+          "/contacts/create?id=" + window.sessionStorage.getItem("sessionID"),
+          JSON.parse(contactPayload)
+        );
+        this.$router.push("/allcontacts");
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+  }
 };
 </script>
 

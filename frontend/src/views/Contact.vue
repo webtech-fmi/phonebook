@@ -38,7 +38,7 @@
         <div v-for="(email, index) in emailType" :key="index">
           <div class="form-field">
             <div class="left-column">
-              <div class="field-header">{{ i }} {{ index + 1 }}</div>
+              <div class="field-header">{{ i }} email {{ index + 1 }}</div>
               <br />
               <el-input
                 class="field-data"
@@ -57,7 +57,7 @@
         <div v-for="(phone, index) in phoneType" :key="index">
           <div class="form-field">
             <div class="left-column">
-              <el-field class="field-header"> {{ i }} {{ index + 1 }}</el-field>
+              <el-field class="field-header"> {{ i }} phone {{ index + 1 }}</el-field>
               <br />
               <el-input
                 class="field-data"
@@ -151,15 +151,10 @@ export default {
 }
 
 .back-button {
-  background-color: transparent;
-  background-color: #008080;
   border: none;
   float: left;
 }
 
-.more-button {
-  background-color: #008080;
-}
 .avatar {
   margin-bottom: 5vh;
 }

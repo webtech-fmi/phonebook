@@ -35,16 +35,13 @@ contacts.post("/create", async (req, res, next) => {
     phone: req.body.phone,
     metadata: req.body.metadata,
   };
-
   try {
     const response = await axios.post(
-      process.env.CONTACT_SERVICE +
-        "/contacts/create?id=" +
-        req.body.session_id,
+      process.env.CONTACT_SERVICE + "/contacts/create?id=" + req.query.id,
       contact
     );
 
-    res.status(200).json(response);
+    res.status(200).json({ status: "success" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
