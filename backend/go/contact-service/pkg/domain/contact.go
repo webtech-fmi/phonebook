@@ -68,7 +68,10 @@ func (p *Personal) Scan(src interface{}) error {
 	return storage.ScanJSONB(p, src)
 }
 
-type Metadata struct{}
+type Metadata struct {
+	Organization string `json:"organization"`
+	Address      string `json:"address"`
+}
 
 // SQL Valuer/Scan interface implementations
 func (m Metadata) Value() (driver.Value, error) {

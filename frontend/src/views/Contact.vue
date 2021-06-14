@@ -71,7 +71,47 @@
           </div>
         </div>
       </div>
+      <div class="form-field" v-if="user.metadata.organization !== undefined">
+        <div class="left-column">
+          <el-field class="field-header"> Organization </el-field>
+          <br />
+          <el-input
+            class="field-data"
+            v-model="user.metadata.organization"
+            :disabled="editButton"
+            >{{
+          }}</el-input>
+          <el-divider class="divider"></el-divider>
+        </div>
+      </div>
+
+      <div class="form-field" v-if="user.metadata.address !== undefined">
+        <div class="left-column">
+          <el-field class="field-header"> Address </el-field>
+          <br />
+          <el-input
+            class="field-data"
+            v-model="user.metadata.address"
+            :disabled="editButton"
+            >{{
+          }}</el-input>
+          <el-divider class="divider"></el-divider>
+        </div>
+      </div>
     </div>
+
+    <div class="dropdown-button">
+      <el-dropdown>
+        <el-button type="primary"> Add Additional Info<i class="el-icon--right"></i> </el-button>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="addAddress">Add Address</el-dropdown-item>
+            <el-dropdown-item @click="addOrganization">Add Organization</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+    <br />
 
     <el-button class="edit-button" type="primary" @click="editButton = !editButton">
       {{ editButton == true ? "Edit" : "Save" }}</el-button
@@ -96,6 +136,10 @@ export default {
       phone: [],
       personal: {
         full_name: ""
+      },
+      metadata: {
+        address: null,
+        organization: null
       }
     },
     sideMenu: false,
@@ -123,6 +167,12 @@ export default {
       } catch (e) {
         console.warn(e);
       }
+    },
+    addOrganization() {
+      this.user.metadata.organization = "";
+    },
+    addAddress() {
+      this.user.metadata.address = "";
     }
   },
   async mounted() {

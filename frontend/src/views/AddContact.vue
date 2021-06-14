@@ -40,7 +40,9 @@
           >
           </el-input>
         </div>
-        <el-button class="save-button" @click="AddElemToEmails(i)">Add {{ i }}</el-button>
+        <el-button class="save-button" type="primary" @click="AddElemToEmails(i)"
+          >Add {{ i }}</el-button
+        >
       </div>
 
       <div v-for="(phoneType, i) in contact.phone" :key="i">
@@ -53,10 +55,12 @@
           >
           </el-input>
         </div>
-        <el-button class="save-button" @click="AddElemToPhones(i)">Add {{ i }}</el-button>
+        <el-button class="save-button" type="primary" @click="AddElemToPhones(i)"
+          >Add {{ i }}</el-button
+        >
       </div>
     </div>
-    <el-button class="save-button" @click="createContact">Save</el-button>
+    <el-button class="save-button-main" type="primary" @click="createContact">Save</el-button>
     <br />
     <img class="footer-image" src="../assets/add-contact-image.svg" />
   </div>
@@ -187,8 +191,15 @@ export default {
 .save-button {
   width: 24vw;
   height: 5vh;
-  background: #008080;
+  margin-bottom: 3vh;
+}
+
+.save-button-main {
+  background-color: #512da8;
+  border: none;
   color: white;
+  width: 24vw;
+  height: 5vh;
   margin-bottom: 3vh;
 }
 
