@@ -27,6 +27,7 @@ contacts.get("/by-id", async (req, res, next) => {
   }
 });
 
+// unverified
 contacts.post("/create", async (req, res, next) => {
   const contact = {
     email: req.body.email,
@@ -37,7 +38,9 @@ contacts.post("/create", async (req, res, next) => {
 
   try {
     const response = await axios.post(
-      process.env.CONTACT_SERVICE + "/contacts/create?id=" + req.body.session_id,
+      process.env.CONTACT_SERVICE +
+        "/contacts/create?id=" +
+        req.body.session_id,
       contact
     );
 
@@ -84,6 +87,43 @@ contacts.post("/merge", async (req, res, next) => {
     );
 
     res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+contacts.post("/favourite", async (req, res, next) => {
+  const favouritePayload = {
+    session_id: req.body.session_id,
+    id: req.body.id,
+    favourite: req.body.favourite,
+  };
+
+  try {
+    const response = await axios.post(
+      process.env.CONTACT_SERVICE + "/contacts/favourite",
+      favouritePayload
+    );
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+contacts.post("/delete", async (req, res, next) => {
+  const deletePayload = {
+    session_id: req.body.session_id,
+    id: req.body.id,
+  };
+
+  try {
+    const response = await axios.post(
+      process.env.CONTACT_SERVICE + "/contacts/delete",
+      deletePayload
+    );
+
+    res.status(200).json(response.data);
   } catch (error) {
     res.status(500).json({ error: error });
   }
