@@ -1,51 +1,53 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../views/Login.vue';
-import SignUp from '../views/SignUp.vue';
-import Contact from '../views/Contact.vue';
-import AllContacts from '../views/AllContacts.vue';
-import AddContact from '../views/AddContact.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import Login from "../views/Login.vue";
+import App from "../App.vue";
+import SignUp from "../views/SignUp.vue";
+import Contact from "../views/Contact.vue";
+import AllContacts from "../views/AllContacts.vue";
+import AddContact from "../views/AddContact.vue";
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home,
-  // },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
+    path: "/",
+    name: "App",
+    component: App
   },
   {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp,
+    path: "/login",
+    name: "Login",
+    component: Login
   },
   {
-    path: '/me',
-    name: 'Me',
+    path: "/signup",
+    name: "SignUp",
+    component: SignUp
+  },
+  {
+    path: "/me",
+    name: "Me",
+    component: Contact
+  },
+  {
+    path: "/allcontacts",
+    name: "AllContacts",
+    component: AllContacts
+  },
+  {
+    path: "/add-contact",
+    name: "AddContact",
+    component: AddContact
+  },
+  {
+    path: "/contact",
+    name: "contact",
     component: Contact,
-  },
-  {
-    path: '/allcontacts',
-    name: 'AllContacts',
-    component: AllContacts,
-  },
-  {
-    path: '/add-contact',
-    name: 'AddContact',
-    component: AddContact,
-  },
-  {
-    path: '/contact/:id',
-    name: 'Contact',
-    component: Contact,
-  },
+    props: true
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes
 });
 
 export default router;

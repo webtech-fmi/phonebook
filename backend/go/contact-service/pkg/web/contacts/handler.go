@@ -22,12 +22,7 @@ func (h Handler) GetByOwner(logger *log.Logger, ds *service.ContactService, hs *
 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
 		}
 
-		session, err := hs.Authentication.ResolveSessionID(ID)
-		if err != nil {
-			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
-		}
-
-		profile, err := hs.Profile.ResolveUserID(session.ID)
+		profile, err := hs.Profile.ResolveUserID(ID)
 		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
@@ -67,12 +62,7 @@ func (h Handler) CreateContact(logger *log.Logger, ds *service.ContactService, h
 			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
 		}
 
-		session, err := hs.Authentication.ResolveSessionID(ID)
-		if err != nil {
-			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
-		}
-
-		profile, err := hs.Profile.ResolveUserID(session.ID)
+		profile, err := hs.Profile.ResolveUserID(ID)
 		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
@@ -83,9 +73,7 @@ func (h Handler) CreateContact(logger *log.Logger, ds *service.ContactService, h
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		if request.OwnerID != profile.ID.String() {
-			return routing.NewHTTPError(http.StatusBadRequest, "unauthorized")
-		}
+		request.OwnerID = profile.ID.String()
 
 		if err := ds.CreateContact(&request); err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())

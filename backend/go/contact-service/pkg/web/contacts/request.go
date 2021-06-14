@@ -4,7 +4,6 @@ import (
 	"time"
 
 	ozzo "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/google/uuid"
 	"github.com/webtech-fmi/phonebook/backend/go/contact-service/pkg/domain"
 	"github.com/webtech-fmi/phonebook/backend/go/domain/vocabulary"
@@ -21,8 +20,7 @@ type CreateRequest struct {
 func (cr *CreateRequest) Validate() error {
 	return ozzo.ValidateStruct(
 		cr,
-		ozzo.Field(&cr.OwnerID, ozzo.Required, is.UUID),
-		ozzo.Field(&cr.Email, ozzo.Required, ozzo.Each(is.Email)),
+		ozzo.Field(&cr.Email, ozzo.Required),
 		ozzo.Field(&cr.Phone, ozzo.Required),
 	)
 }

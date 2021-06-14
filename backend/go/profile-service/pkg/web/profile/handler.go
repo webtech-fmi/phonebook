@@ -25,7 +25,7 @@ func (h Handler) GetByOwner(logger *log.Logger, ds *service.ProfileService, a au
 		session, err := a.ResolveSessionID(ID)
 		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
-		}		
+		}
 
 		profile, err := ds.GetByOwnerID(session.ID)
 		if err != nil {

@@ -21,16 +21,16 @@ type Repository interface {
 }
 
 type Contact struct {
-	ID           uuid.UUID         `db:"id"`
-	Status       vocabulary.Status `db:"status"`
-	OwnerID      uuid.UUID         `db:"owner_id"`
-	CreatedTime  *time.Time        `db:"created_time"`
-	ModifiedTime *time.Time        `db:"modified_time"`
-	Favourite    bool              `db:"favourite"`
-	Email        ContactInfo       `db:"email"`
-	Personal     Personal          `db:"personal"`
-	Phone        ContactInfo       `db:"phone"`
-	Metadata     Metadata          `db:"metadata"`
+	ID           uuid.UUID         `json:"id" db:"id"`
+	Status       vocabulary.Status `json:"status" db:"status"`
+	OwnerID      uuid.UUID         `json:"owner_id" db:"owner_id"`
+	CreatedTime  *time.Time        `json:"created_time" db:"created_time"`
+	ModifiedTime *time.Time        `json:"modified_time" db:"modified_time"`
+	Favourite    bool              `json:"favourite" db:"favourite"`
+	Email        ContactInfo       `json:"email" db:"email"`
+	Personal     Personal          `json:"personal" db:"personal"`
+	Phone        ContactInfo       `json:"phone" db:"phone"`
+	Metadata     Metadata          `json:"metadata" db:"metadata"`
 }
 
 type ContactPayload interface {
@@ -44,12 +44,12 @@ type ContactInfo struct {
 }
 
 // SQL Valuer/Scan interface implementations
-func (e Contact) Value() (driver.Value, error) {
+func (e ContactInfo) Value() (driver.Value, error) {
 	return storage.JSONBValue(e)
 }
 
 // SQL Valuer/Scan interface implementations
-func (e *Contact) Scan(src interface{}) error {
+func (e *ContactInfo) Scan(src interface{}) error {
 	return storage.ScanJSONB(e, src)
 }
 

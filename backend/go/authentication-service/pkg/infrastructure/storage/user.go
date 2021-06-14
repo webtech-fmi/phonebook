@@ -66,7 +66,10 @@ func (r *UserRepository) GetUserByCredentials(credentials domain.Credentials) (*
 	switch credentials.Type {
 	case vocabulary.CredentialsPassword:
 		query = query.Where(
-			dbx.NewExp("lock->>'reason' IS NULL AND lock->>'code' IS NULL"),
+			dbx.And(
+				dbx.In("email", credentials.Email),
+				dbx.NewExp("lock->>'reason' IS NULL AND lock->>'code' IS NULL"),
+			),
 		)
 	case vocabulary.CredentialsLock:
 		query = query.Where(

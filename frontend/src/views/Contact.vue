@@ -1,157 +1,144 @@
 <template>
-  <div class='background'>
-    <div class='header'>
+  <div class="background">
+    <div class="header">
       <el-button
-        class='back-button'
-        type='primary'
-        icon='el-icon-arrow-left'
-        size='medium'
-        v-if='id != -1'
+        class="back-button"
+        type="primary"
+        icon="el-icon-arrow-left"
+        size="medium"
+        v-if="id != -1"
+        @click="$router.go(-1)"
       >
         Back
       </el-button>
       <el-button
-        class='more-button'
-        type='primary'
-        icon='el-icon-more'
+        class="more-button"
+        type="primary"
+        icon="el-icon-more"
         circle
-        @click='sideMenu = !sideMenu'
+        @click="sideMenu = !sideMenu"
       >
       </el-button>
-      <HamburgerMenu class='side-menu' v-if='sideMenu'></HamburgerMenu>
+      <HamburgerMenu class="side-menu" v-if="sideMenu"></HamburgerMenu>
     </div>
-    <div class='avatar'>
+    <div class="avatar">
       <el-avatar
-        class='avatar-image'
-        :size='large'
-        src='https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+        class="avatar-image"
+        :size="large"
+        src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
       >
       </el-avatar>
-      <el-upload class='upload-demo' :limit='1' accept='image/png image/jpeg'>
-        <el-button
-          class='add-avatar-button'
-          icon='el-icon-circle-plus'
-          circle
-        ></el-button>
+      <el-upload class="upload-demo" :limit="1" accept="image/png image/jpeg">
+        <el-button class="add-avatar-button" icon="el-icon-circle-plus" circle></el-button>
       </el-upload>
     </div>
-    <h2 class='contact-name'>{{ name }}</h2>
-    <div class='info-form'>
-      <div v-for='(email, index) in emails' :key='index'>
-        <div class='form-field'>
-          <div class='left-column'>
-            <el-field class='field-header'>Email</el-field>
-            <br />
-            <el-field class='field-data'> {{ emails[index] }}</el-field>
-            <el-divider class='divider'></el-divider>
-          </div>
-          <div class='right-column'>
-            <el-button
-              class='edit-button'
-              icon='el-icon-edit'
-              circle
-            ></el-button>
-          </div>
-        </div>
-      </div>
-      <div v-for='(workPhone, index) in phones.workPhones' :key='index'>
-        <div class='form-field'>
-          <div class='left-column'>
-            <el-field class='field-header'>Work Phone {{ index + 1 }}</el-field>
-            <br />
-            <el-field class='field-data'>
-              {{ phones.workPhones[index] }}</el-field
-            >
-            <el-divider class='divider'></el-divider>
-          </div>
-          <div class='right-column'>
-            <el-button
-              class='edit-button'
-              icon='el-icon-edit'
-              circle
-            ></el-button>
+    <h2 class="contact-name">{{ user.personal.full_name }}</h2>
+    <div class="info-form">
+      <div v-for="(emailType, i) in user.email" :key="i">
+        <div v-for="(email, index) in emailType" :key="index">
+          <div class="form-field">
+            <div class="left-column">
+              <div class="field-header">{{ i }} {{ index + 1 }}</div>
+              <br />
+              <el-input
+                class="field-data"
+                v-model="emailType[index]"
+                :disabled="editButton"
+                >{{
+              }}</el-input>
+              <el-divider class="divider"></el-divider>
+            </div>
+            <div class="right-column"></div>
           </div>
         </div>
       </div>
-      <div v-for='(mobilePhone, index) in phones.mobilePhones' :key='index'>
-        <div class='form-field'>
-          <div class='left-column'>
-            <el-field class='field-header'
-              >Mobile Phone {{ index + 1 }}</el-field
-            >
-            <br />
-            <el-field class='field-data'>
-              {{ phones.mobilePhones[index] }}</el-field
-            >
-            <el-divider class='divider'></el-divider>
-          </div>
-          <div class='right-column'>
-            <el-button
-              class='edit-button'
-              icon='el-icon-edit'
-              circle
-            ></el-button>
-          </div>
-        </div>
-      </div>
-      <div v-for='(personalPhone, index) in phones.personalPhones' :key='index'>
-        <div class='form-field'>
-          <div class='left-column'>
-            <el-field class='field-header'
-              >Personal Phone {{ index + 1 }}</el-field
-            >
-            <br />
-            <el-field class='field-data'>
-              {{ phones.personalPhones[index] }}</el-field
-            >
-            <el-divider class='divider'></el-divider>
-          </div>
-          <div class='right-column'>
-            <el-button
-              class='edit-button'
-              icon='el-icon-edit'
-              circle
-            ></el-button>
+
+      <div v-for="(phoneType, i) in user.phone" :key="i">
+        <div v-for="(phone, index) in phoneType" :key="index">
+          <div class="form-field">
+            <div class="left-column">
+              <el-field class="field-header"> {{ i }} {{ index + 1 }}</el-field>
+              <br />
+              <el-input
+                class="field-data"
+                v-model="phoneType[index]"
+                :disabled="editButton"
+                >{{
+              }}</el-input>
+              <el-divider class="divider"></el-divider>
+            </div>
+            <div class="right-column"></div>
           </div>
         </div>
       </div>
     </div>
-    <el-button class='merge-button' type='primary' v-if='id != -1'
-      >Merge with...</el-button
+
+    <el-button class="edit-button" type="primary" @click="editButton = !editButton">
+      {{ editButton == true ? "Edit" : "Save" }}</el-button
     >
-    <el-button class='delete-button' type='primary' v-if='id != -1'
-      >Delete</el-button
-    >
+    <el-button class="merge-button" type="primary" v-if="id != -1">Merge with...</el-button>
+    <el-button class="delete-button" type="primary" v-if="id != -1">Delete</el-button>
   </div>
 </template>
 
 <script>
-import HamburgerMenu from '../components/HamburgerMenu.vue';
+import HamburgerMenu from "../components/HamburgerMenu.vue";
+import axios from "axios";
 
 export default {
-  name: 'Contact',
+  name: "Contact",
+  props: ["id"],
   data: () => ({
-    id: -1,
-    name: 'John Doe',
-    emails: ['JohnDoe@gmail.com'],
-    company: 'JohnDoes company',
-    phones: {
-      mobilePhones: ['11111111', '22222222'],
-      workPhones: ['1111111111', '2222222222'],
-      personalPhones: ['123123123', '123123123'],
+    user: {
+      id: "",
+      user_id: "",
+      email: [],
+      phone: [],
+      personal: {
+        full_name: ""
+      }
     },
     sideMenu: false,
+    editButton: true
   }),
   components: {
-    HamburgerMenu,
+    HamburgerMenu
   },
+  methods: {
+    async getProfile() {
+      const session = `{
+            "session_id": "${window.sessionStorage.getItem("sessionID")}"
+        }`;
+      try {
+        const res = await axios.post("/profiles/get", JSON.parse(session));
+        this.user = res.data;
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    async getContact() {
+      try {
+        const res = await axios.get("/contacts/by-id?id=" + this.id);
+        this.user = res.data;
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+  },
+  async mounted() {
+    if (!!this.id) {
+      await this.getContact();
+    } else {
+      await this.getProfile();
+    }
+  }
 };
 </script>
 
 <style scoped>
 .background {
   height: 100vh;
-  background-image: url('../assets/background.svg');
+  background-image: url("../assets/background.svg");
   background-size: 100%;
 }
 
@@ -216,19 +203,6 @@ export default {
 
 .divider {
   margin: 1vw 0 1vw 0;
-}
-
-.edit-button {
-  background-color: transparent;
-  border: none;
-}
-
-.merge-button {
-  background-color: #008080;
-}
-
-.delete-button {
-  background-color: #008080;
 }
 
 @media (max-width: 1000px) and (max-height: 812px) {

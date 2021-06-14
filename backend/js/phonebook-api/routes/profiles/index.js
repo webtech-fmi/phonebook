@@ -4,7 +4,7 @@ const axios = require("axios");
 
 profiles.use(express.json());
 
-profiles.get("/get", async (req, res, next) => {
+profiles.post("/get", async (req, res, next) => {
   try {
     const response = await axios.get(
       process.env.PROFILE_SERVICE +
@@ -12,7 +12,7 @@ profiles.get("/get", async (req, res, next) => {
         req.body.session_id
     );
 
-    res.status(200).json(response);
+    res.status(200).json(response.data);
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -32,7 +32,7 @@ profiles.post("/edit", async (req, res, next) => {
       editPayload
     );
 
-    res.status(200).json(response);
+    res.status(200).json(response.data);
   } catch (error) {
     res.status(500).json({ error: error });
   }
