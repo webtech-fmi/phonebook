@@ -67,6 +67,12 @@ type MergeRequest struct {
 }
 
 type FavouriteRequest struct {
+	SessionID string `json:"session_id"`
 	ID        string `json:"id"`
 	Favourite bool   `json:"favourite"`
+}
+
+type DeleteRequest struct {
+	SessionID string `json:"session_id"`
+	ID        string `json:"id"`
 }

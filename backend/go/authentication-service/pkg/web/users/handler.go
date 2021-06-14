@@ -61,6 +61,10 @@ func (h Handler) CreateUser(logger *log.Logger, ds *service.UserService) func(c 
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
+		if err := request.Validate(); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
 		id, err := ds.CreateUser(&request)
 		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())

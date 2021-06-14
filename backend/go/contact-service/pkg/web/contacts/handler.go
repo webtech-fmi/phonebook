@@ -73,6 +73,10 @@ func (h Handler) CreateContact(logger *log.Logger, ds *service.ContactService, h
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
+		if err := request.Validate(); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
 		request.OwnerID = profile.ID.String()
 
 		if err := ds.CreateContact(&request); err != nil {
@@ -144,18 +148,13 @@ func (h Handler) MergeContacts(logger *log.Logger, ds *service.ContactService, h
 
 func (h Handler) Favourite(logger *log.Logger, ds *service.ContactService, hs *domain_service.HTTPServices) func(c *routing.Context) error {
 	return func(c *routing.Context) error {
-		ID := c.Query("id")
-		if ID == "" {
-			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
-		}
-
-		profile, err := hs.Profile.ResolveUserID(ID)
-		if err != nil {
+		request := FavouriteRequest{}
+		if err := c.Read(&request); err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		request := FavouriteRequest{}
-		if err := c.Read(&request); err != nil {
+		profile, err := hs.Profile.ResolveUserID(request.SessionID)
+		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
@@ -176,11 +175,36 @@ func (h Handler) Favourite(logger *log.Logger, ds *service.ContactService, hs *d
 	}
 }
 
+func (h Handler) Delete(logger *log.Logger, ds *service.ContactService, hs *domain_service.HTTPServices) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		request := DeleteRequest{}
+		if err := c.Read(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		profile, err := hs.Profile.ResolveUserID(request.SessionID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		err = ds.DeleteContact(request.ID, profile.ID.String())
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		c.Response.WriteHeader(http.StatusOK)
+		return nil
+	}
+}
+
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ContactService, hs *domain_service.HTTPServices) {
 	api.Get("/by-owner", h.GetByOwner(logger, s, hs))
 	api.Get("/by-id", h.Get(logger, s))
+
 	api.Post("/create", h.CreateContact(logger, s, hs))
 	api.Post("/edit", h.EditContact(logger, s, hs))
 	api.Post("/merge", h.MergeContacts(logger, s, hs))
+	
 	api.Put("/favourite", h.Favourite(logger, s, hs))
+	api.Put("/delete", h.Delete(logger, s, hs))
 }
