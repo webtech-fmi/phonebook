@@ -65,3 +65,8 @@ type MergeRequest struct {
 	Main     string   `json:"main"`
 	Contacts []string `json:"contacts"`
 }
+
+type FavouriteRequest struct {
+	ID        string `json:"id"`
+	Favourite bool   `json:"favourite"`
+}
