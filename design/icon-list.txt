@@ -1,0 +1,29 @@
+Source: https://material.io/resources/icons
+
+Icon names:
+
+- account_circle
+- remove_red_eye
+- home
+- account_box
+- favorite
+- favorite_border
+- meeting_room
+- person
+- email
+- work
+- phone
+- smartphone
+- add_a_photo
+- settings
+- add
+- more_horiz
+- arrow_back_ios_new
+
+Usage:
+
+- instructions: http://google.github.io/material-design-icons/
+
+<span class="material-icons">
+      arrow_back_ios_new
+</span>
