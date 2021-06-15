@@ -50,6 +50,8 @@ contacts.post("/create", async (req, res, next) => {
 contacts.post("/edit", async (req, res, next) => {
   try {
     const editPayload = {
+      id: req.body.id,
+      session_id: req.body.session_id,
       email: req.body.email,
       phone: req.body.phone,
       personal: req.body.personal,
@@ -57,11 +59,11 @@ contacts.post("/edit", async (req, res, next) => {
     };
 
     const response = await axios.post(
-      process.env.CONTACT_SERVICE + "/contacts/edit?id=" + req.body.session_id,
+      process.env.CONTACT_SERVICE + "/contacts/edit",
       editPayload
     );
 
-    res.status(200).json(response);
+    res.status(200).json({ status: "success" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -93,12 +95,12 @@ contacts.post("/favourite", async (req, res, next) => {
   };
 
   try {
-    const response = await axios.post(
+    const response = await axios.put(
       process.env.CONTACT_SERVICE + "/contacts/favourite",
       favouritePayload
     );
 
-    res.status(200).json(response.data);
+    res.status(200).json({ status: "success" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -111,7 +113,7 @@ contacts.post("/delete", async (req, res, next) => {
   };
 
   try {
-    const response = await axios.post(
+    const response = await axios.put(
       process.env.CONTACT_SERVICE + "/contacts/delete",
       deletePayload
     );

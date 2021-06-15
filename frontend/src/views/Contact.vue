@@ -25,11 +25,10 @@
         src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
       >
       </el-avatar>
-      <el-upload class="upload-demo" :limit="1" accept="image/png image/jpeg">
-        <el-button class="add-avatar-button" icon="el-icon-circle-plus" circle></el-button>
-      </el-upload>
     </div>
-    <h2 class="contact-name">{{ user.personal.full_name }}</h2>
+    <div>
+      <span class="contact-name">{{ user.personal.full_name }}</span>
+    </div>
     <div class="info-form">
       <div v-for="(emailType, i) in user.email" :key="i">
         <div v-for="(email, index) in emailType" :key="index">
@@ -99,7 +98,9 @@
 
     <div class="dropdown-button">
       <el-dropdown>
-        <el-button type="primary"> Add Additional Info<i class="el-icon--right"></i> </el-button>
+        <el-button @click="editButton = !editButton" type="primary">
+          Add Additional Info<i class="el-icon--right"></i>
+        </el-button>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="addAddress">Add Address</el-dropdown-item>
@@ -110,10 +111,10 @@
     </div>
     <br />
 
-    <el-button class="edit-button" type="primary" @click="editButton = !editButton">
+    <el-button class="footer-button" type="primary" @click="edit">
       {{ editButton == true ? "Edit" : "Save" }}</el-button
     >
-    <el-button class="merge-button" @click="openMerge" type="primary" v-if="id != -1"
+    <el-button class="footer-button" @click="openMerge" type="primary" v-if="isContact"
       >Merge with...</el-button
     >
     <el-dialog
@@ -127,7 +128,23 @@
       }}</el-checkbox>
       <el-button type="primary" @click="mergeContacts">Confirm</el-button>
     </el-dialog>
-    <el-button class="delete-button" type="primary" v-if="id != -1">Delete</el-button>
+    <el-button class="footer-button" type="primary" v-if="isContact" @click="deleteContact"
+      >Delete</el-button
+    >
+    <el-button
+      class="footer-button"
+      type="primary"
+      v-if="isContact && user.favourite == false"
+      @click="favourite"
+      >Add To Favourites</el-button
+    >
+    <el-button
+      class="footer-button"
+      type="primary"
+      v-if="isContact && user.favourite == true"
+      @click="favourite"
+      >Remove From Favourites</el-button
+    >
   </div>
 </template>
 
@@ -155,12 +172,47 @@ export default {
       }
     },
     sideMenu: false,
-    editButton: true
+    editButton: true,
+    isContact: false
   }),
   components: {
     HamburgerMenu
   },
   methods: {
+    async favourite() {
+      this.user.favourite = !this.user.favourite;
+      const favouritePayload = {
+        session_id: window.sessionStorage.getItem("sessionID"),
+        id: this.id,
+        favourite: this.user.favourite
+      };
+      try {
+        const res = await axios.post("/contacts/favourite", favouritePayload);
+        if (res.status == 200) {
+          this.$router.push({ name: `contact`, params: { id: this.id } });
+        } else {
+          console.log("TODO");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    async deleteContact() {
+      const deletePayload = {
+        session_id: window.sessionStorage.getItem("sessionID"),
+        id: this.id,
+      };
+      try {
+        const res = await axios.post("/contacts/delete", deletePayload);
+        if (res.status == 200) {
+          this.$router.push('/allcontacts');
+        } else {
+          console.log("TODO");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async getProfile() {
       const session = `{
             "session_id": "${window.sessionStorage.getItem("sessionID")}"
@@ -195,6 +247,57 @@ export default {
     },
     addAddress() {
       this.user.metadata.address = "";
+    },
+    async editContact() {
+      const editPayload = {
+        session_id: window.sessionStorage.getItem("sessionID"),
+        id: this.id,
+        email: this.user.email,
+        phone: this.user.phone,
+        personal: this.user.personal,
+        metadata: this.user.metadata
+      };
+
+      try {
+        const res = await axios.post("/contacts/edit", editPayload);
+        if (res.status == 200) {
+          this.$router.push({ name: `contact`, params: { id: this.id } });
+        } else {
+          console.log("TODO");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    async editProfile() {
+      const editPayload = {
+        session_id: window.sessionStorage.getItem("sessionID"),
+        email: this.user.email,
+        phone: this.user.phone,
+        personal: this.user.personal,
+        metadata: this.user.metadata
+      };
+
+      try {
+        const res = await axios.post("/profiles/edit", editPayload);
+        if (res.status == 200) {
+          this.$router.push("/me");
+        } else {
+          console.log("TODO");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    async edit() {
+      this.editButton = !this.editButton;
+      if (this.editButton) {
+        if (this.id) {
+          await this.editContact();
+        } else {
+          await this.editProfile();
+        }
+      }
     },
     async mergeContacts() {
       const mergePayload = {
@@ -232,6 +335,7 @@ export default {
   async mounted() {
     if (!!this.id) {
       await this.getContact();
+      this.isContact = true;
     } else {
       await this.getProfile();
     }
@@ -240,10 +344,22 @@ export default {
 </script>
 
 <style scoped>
+.favorite-button {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  z-index: 1;
+  font-size: 20px;
+}
+
 .background {
-  height: 100vh;
-  background-image: url("../assets/background.svg");
+  /* height: 100vh; */
+  background: url("../assets/background.svg") no-repeat center center fixed;
   background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .header {
@@ -251,12 +367,12 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 3vh 3vw 3vh 3vw;
+  padding: 3vh 3vw 3vh 3vw;
 }
 
 .dropdown-button {
-  margin-top: 6vh;
-  margin-bottom: 6vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
 }
 
 .el-checkbox:last-of-type {
@@ -270,9 +386,15 @@ export default {
   float: left;
 }
 
-.avatar {
-  margin-bottom: 5vh;
+.footer-button {
+  margin: 1vh 1vw 5vh 1vw;
+  width: 20vh;
 }
+
+.avatar {
+  margin-bottom: 2vh;
+}
+
 .avatar-image {
   position: relative;
   margin-left: auto;
@@ -282,13 +404,15 @@ export default {
 }
 
 .contact-name {
-  margin-bottom: 3vh;
+  margin-bottom: 4vh;
+  font-size: 30px;
+  /* margin-left: 5vh; */
 }
 
 .info-form {
   width: 50vw;
   margin: auto;
-  margin-bottom: 5vh;
+  /* margin-bottom: 5vh; */
   padding: 1vw;
 }
 
@@ -299,11 +423,11 @@ export default {
 }
 
 .right-column {
-  width: 10%;
+  width: 0%;
 }
 
 .left-column {
-  width: 90%;
+  width: 100%;
   text-align: left;
 }
 
@@ -330,10 +454,19 @@ export default {
   }
 
   .info-form {
-    width: 70vw;
+    width: 75vw;
     margin: auto;
-    margin-bottom: 5vh;
-    padding: 1vw;
+    /* margin-bottom: 5vh; */
+    /* padding: 1vw; */
+  }
+
+  .background {
+    background: url("../assets/background.svg") no-repeat center center fixed;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
   }
 }
 </style>

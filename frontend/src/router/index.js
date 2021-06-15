@@ -5,6 +5,7 @@ import SignUp from "../views/SignUp.vue";
 import Contact from "../views/Contact.vue";
 import AllContacts from "../views/AllContacts.vue";
 import AddContact from "../views/AddContact.vue";
+import Favourites from "../views/Favourites.vue";
 
 const routes = [
   {
@@ -41,6 +42,12 @@ const routes = [
     path: "/contact",
     name: "contact",
     component: Contact,
+    props: true
+  },
+  {
+    path: "/favourite",
+    name: "Favourite",
+    component: Favourites,
     props: true
   }
 ];

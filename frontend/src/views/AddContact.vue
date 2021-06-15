@@ -22,6 +22,7 @@
       </el-upload>
     </div>
     <div class="form">
+      <div class="label">Personal:</div>
       <el-input
         class="input-field"
         placeholder="Name"
@@ -30,6 +31,7 @@
       >
         {{ contact.personal.full_name }}
       </el-input>
+      <div class="label">Email:</div>
       <div v-for="(emailType, i) in contact.email" :key="i">
         <div v-for="(emailPhone, index) in emailType" :key="index">
           <el-input
@@ -45,6 +47,7 @@
         >
       </div>
 
+      <div class="label">Phone:</div>
       <div v-for="(phoneType, i) in contact.phone" :key="i">
         <div v-for="(work, index) in phoneType" :key="index">
           <el-input
@@ -134,11 +137,21 @@ export default {
 <style scoped>
 .background {
   height: 100vh;
-  background-image: url("../assets/background.svg");
+  background: url("../assets/background.svg") no-repeat center center fixed;
   background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
+
+.label {
+  font-weight: 600;
+  padding-bottom: 1vh;
+}
+
 .header {
-  margin-top: 3vh;
+  padding-top: 3vh;
 }
 
 .back-button {
@@ -156,7 +169,7 @@ export default {
 .avatar {
   position: relative;
   margin: auto;
-  margin-right: 5vw;
+  /* margin-right: 5vw; */
 }
 
 .avatar-image {
@@ -204,10 +217,10 @@ export default {
 }
 
 .footer-image {
-  width: 10vw;
-  height: 20vh;
-  margin-left: auto;
-  margin-right: auto;
+  width: 0vw;
+  height: 0vh;
+  padding-left: auto;
+  padding-right: auto;
 }
 
 @media (max-width: 1000px) and (max-height: 812px) {
@@ -245,6 +258,15 @@ export default {
 
   .footer-image {
     width: 40vw;
+  }
+
+  .background {
+    background: url("../assets/background.svg") no-repeat center center fixed;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
   }
 }
 </style>

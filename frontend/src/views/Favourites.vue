@@ -8,7 +8,7 @@
         @click="sideMenu = !sideMenu"
         circle
       ></el-button>
-      <h2 class="UserContacts">My Contacts</h2>
+      <h2 class="UserContacts">Favourites</h2>
       <el-button
         class="add-button"
         type="primary"

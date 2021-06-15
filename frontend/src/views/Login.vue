@@ -50,13 +50,13 @@ export default {
       try {
         const res = await axios.post("/auth/login", JSON.parse(user));
         if (res.status == 200) {
-            window.sessionStorage.setItem("sessionID", res.data.id);
-            this.$router.push('/me');
+          window.sessionStorage.setItem("sessionID", res.data.id);
+          this.$router.push("/me");
         } else {
-            console.log("TODO");
+          console.log("TODO");
         }
       } catch (e) {
-          console.warn(e);
+        console.warn(e);
       }
     }
   }
@@ -66,9 +66,14 @@ export default {
 <style scoped>
 .background {
   height: 100vh;
-  background-image: url("../assets/background.svg");
+  background: url("../assets/background.svg") no-repeat center center fixed;
   background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
+
 .avatar {
   height: 20vh;
   padding: 1em;
@@ -112,6 +117,15 @@ export default {
   }
   .sign-in-button {
     width: 40vw;
+  }
+
+  .background {
+    background: url("../assets/background.svg") no-repeat center center fixed;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
   }
 }
 .input-field {

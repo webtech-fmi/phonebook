@@ -191,7 +191,7 @@ func (r *ContactRepository) Delete(id, owner_id string) error {
 		contactsTable,
 		dbx.Params{
 			"modified_time": time.Now().UTC(),
-			"status":        string(vocabulary.Active),
+			"status":        string(vocabulary.Archived),
 		},
 		dbx.And(
 			dbx.In("id", ID),

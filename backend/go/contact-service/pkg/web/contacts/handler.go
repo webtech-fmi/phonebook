@@ -90,19 +90,14 @@ func (h Handler) CreateContact(logger *log.Logger, ds *service.ContactService, h
 
 func (h Handler) EditContact(logger *log.Logger, ds *service.ContactService, hs *domain_service.HTTPServices) func(c *routing.Context) error {
 	return func(c *routing.Context) error {
-		ID := c.Query("id")
-		if ID == "" {
-			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
-		}
-
-		profile, err := hs.Profile.ResolveUserID(ID)
-		if err != nil {
-			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
-		}
-
 		request := EditRequest{}
 
 		if err := c.Read(&request); err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		profile, err := hs.Profile.ResolveUserID(request.SessionID)
+		if err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
@@ -204,7 +199,7 @@ func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.
 	api.Post("/create", h.CreateContact(logger, s, hs))
 	api.Post("/edit", h.EditContact(logger, s, hs))
 	api.Post("/merge", h.MergeContacts(logger, s, hs))
-	
+
 	api.Put("/favourite", h.Favourite(logger, s, hs))
 	api.Put("/delete", h.Delete(logger, s, hs))
 }

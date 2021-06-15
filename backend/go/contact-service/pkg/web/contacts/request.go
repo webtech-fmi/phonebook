@@ -42,11 +42,12 @@ func (cr *CreateRequest) ToContact() (*domain.Contact, error) {
 }
 
 type EditRequest struct {
-	ID       string             `json:"id"`
-	Email    domain.ContactInfo `json:"email"`
-	Phone    domain.ContactInfo `json:"phone"`
-	Personal domain.Personal    `json:"personal"`
-	Metadata domain.Metadata    `json:"metadata"`
+	ID        string             `json:"id"`
+	SessionID string             `json:"session_id"`
+	Email     domain.ContactInfo `json:"email"`
+	Phone     domain.ContactInfo `json:"phone"`
+	Personal  domain.Personal    `json:"personal"`
+	Metadata  domain.Metadata    `json:"metadata"`
 }
 
 func (cr *EditRequest) ToContact() (*domain.Contact, error) {

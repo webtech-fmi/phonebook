@@ -52,7 +52,7 @@ export default {
       try {
         const res = await axios.post("/auth/signup", JSON.parse(user));
         if (res.status == 200) {
-            console.log(user);
+          console.log(user);
           this.$router.push("/login");
         } else {
           console.log("TODO");
@@ -68,8 +68,12 @@ export default {
 <style scoped>
 .background {
   height: 100vh;
-  background-image: url("../assets/background.svg");
+  background: url("../assets/background.svg") no-repeat center center fixed;
   background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .sign-up-header {
@@ -104,5 +108,15 @@ a:any-link {
 }
 .info {
   font-weight: bold;
+}
+@media (max-width: 800px) and (max-height: 600px) {
+  .background {
+    background: url("../assets/background.svg") no-repeat center center fixed;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 }
 </style>
