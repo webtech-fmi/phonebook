@@ -60,6 +60,7 @@ export default {
     search: "",
     sideMenu: false,
     contacts: [],
+    contactResults: [],
     searchContacts: []
   }),
 
@@ -86,6 +87,7 @@ export default {
           "/contacts/by-owner?id=" + window.sessionStorage.getItem("sessionID")
         );
         this.contacts = res.data.contacts;
+        this.contactResults = res.data.contacts;
         this.searchContacts = res.data.contacts.map(e => {
           return {
             value: e.personal.full_name
@@ -103,6 +105,9 @@ export default {
       var contacts = this.searchContacts;
       var results = query ? contacts.filter(this.createFilter(query)) : contacts;
       var top5 = results.slice(0, 5);
+      this.contacts = this.contactResults.filter(contact =>
+        top5.filter(v => v.value === contact.personal.full_name).length > 0
+      );
       cb(top5); // number of things returned
     },
     createFilter(query) {
