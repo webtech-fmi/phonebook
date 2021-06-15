@@ -19,14 +19,6 @@
       </el-button>
     </div>
     <HamburgerMenu class="side-menu" @clicked="OnMenuClose" v-if="sideMenu"></HamburgerMenu>
-    <el-autocomplete
-      class="inline-input"
-      v-model="state1"
-      :fetch-suggestions="querySearch"
-      placeholder="Please Input"
-      @select="handleSelect"
-    >
-    </el-autocomplete>
     <ol class="list">
       <el-row class="row" v-for="contact in contacts" :key="contact">
         <el-column class="left-column">
