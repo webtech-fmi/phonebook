@@ -19,6 +19,10 @@ func (s *ContactService) CreateContact(payload domain.ContactPayload) error {
 	return s.Repository.Add(*contact)
 }
 
+func (s *ContactService) GetFavouritesByOwnerID(ID string) ([]domain.Contact, error) {
+	return s.Repository.GetFavouritesByOwnerID(ID)
+}
+
 func (s *ContactService) GetByOwnerID(ID string) ([]domain.Contact, error) {
 	return s.Repository.GetByOwnerID(ID)
 }

@@ -13,6 +13,7 @@ type Repository interface {
 	Add(Contact) error
 	GetByID(string) (*Contact, error)
 	GetByOwnerID(string) ([]Contact, error)
+	GetFavouritesByOwnerID(string) ([]Contact, error)
 	Edit(string, string, Contact) error
 	Delete(string, string) error
 	AddToFavourites(string, string) error

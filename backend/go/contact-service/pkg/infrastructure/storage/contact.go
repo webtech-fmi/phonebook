@@ -111,6 +111,43 @@ func (r *ContactRepository) GetByOwnerID(ownerID string) ([]domain.Contact, erro
 	return contacts, nil
 }
 
+func (r *ContactRepository) GetFavouritesByOwnerID(ownerID string) ([]domain.Contact, error) {
+	ID, err := uuid.Parse(ownerID)
+	if err != nil {
+		return nil, err
+	}
+
+	query := r.Adapter.DB.
+		Select(
+			"id",
+			"status",
+			"owner_id",
+			"favourite",
+			"created_time",
+			"modified_time",
+			"email",
+			"personal",
+			"phone",
+			"metadata",
+		).
+		From(contactsTable).
+		Where(
+			dbx.And(
+				dbx.In("status", string(vocabulary.Active)),
+				dbx.In("owner_id", ID),
+				dbx.In("favourite", true),
+			),
+		)
+
+	var contacts []domain.Contact
+	err = query.All(&contacts)
+	if err != nil {
+		return nil, err
+	}
+
+	return contacts, nil
+}
+
 func (r *ContactRepository) Edit(id, owner_id string, newContact domain.Contact) error {
 	ID, err := uuid.Parse(id)
 	if err != nil {

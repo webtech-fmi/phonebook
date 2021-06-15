@@ -15,6 +15,18 @@ contacts.get("/by-owner", async (req, res, next) => {
   }
 });
 
+contacts.get("/favourites", async (req, res, next) => {
+  try {
+    const response = await axios.get(
+      process.env.CONTACT_SERVICE + "/contacts/favourites?id=" + req.query.id
+    );
+    res.status(200).json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+
 contacts.get("/by-id", async (req, res, next) => {
   try {
     const response = await axios.get(

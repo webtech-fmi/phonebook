@@ -21,10 +21,11 @@
     <HamburgerMenu class="side-menu" @clicked="OnMenuClose" v-if="sideMenu"></HamburgerMenu>
     <el-autocomplete
       class="inline-input"
-      v-model="state1"
+      v-model="search"
       :fetch-suggestions="querySearch"
-      placeholder="Please Input"
+      placeholder="Find Contact"
       @select="handleSelect"
+      :trigger-on-focus="false"
     >
     </el-autocomplete>
     <ol class="list">
@@ -58,7 +59,8 @@ export default {
   data: () => ({
     search: "",
     sideMenu: false,
-    contacts: []
+    contacts: [],
+    searchContacts: []
   }),
 
   async mounted() {
@@ -84,12 +86,33 @@ export default {
           "/contacts/by-owner?id=" + window.sessionStorage.getItem("sessionID")
         );
         this.contacts = res.data.contacts;
+        this.searchContacts = res.data.contacts.map(e => {
+          return {
+            value: e.personal.full_name
+          };
+        });
+        console.log(this.searchContacts);
       } catch (e) {
         console.warn(e);
       }
     },
     OnMenuClose() {
       this.sideMenu = false;
+    },
+    querySearch(query, cb) {
+      var contacts = this.searchContacts;
+      var results = query ? contacts.filter(this.createFilter(query)) : contacts;
+      var top5 = results.slice(0, 5);
+      cb(top5); // number of things returned
+    },
+    createFilter(query) {
+      return contact => {
+        return contact.value.toLowerCase().includes(query.toLowerCase());
+      };
+    },
+    handleSelect(item) {
+      this.label = item.name;
+      console.log(item.name);
     }
   }
 };

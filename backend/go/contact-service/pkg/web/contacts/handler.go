@@ -37,6 +37,28 @@ func (h Handler) GetByOwner(logger *log.Logger, ds *service.ContactService, hs *
 	}
 }
 
+func (h Handler) GetFavourites(logger *log.Logger, ds *service.ContactService, hs *domain_service.HTTPServices) func(c *routing.Context) error {
+	return func(c *routing.Context) error {
+		ID := c.Query("id")
+		if ID == "" {
+			return routing.NewHTTPError(http.StatusBadRequest, "passed an empty ID")
+		}
+
+		profile, err := hs.Profile.ResolveUserID(ID)
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+
+		contact, err := ds.GetFavouritesByOwnerID(profile.ID.String())
+		if err != nil {
+			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+		w := content.JSONDataWriter{}
+
+		return w.Write(c.Response, NewFetchAllResponse(contact, ds))
+	}
+}
+
 // Get - load contact by ID
 func (h Handler) Get(logger *log.Logger, ds *service.ContactService) func(c *routing.Context) error {
 	return func(c *routing.Context) error {
@@ -195,6 +217,7 @@ func (h Handler) Delete(logger *log.Logger, ds *service.ContactService, hs *doma
 func (h Handler) Routes(api *routing.RouteGroup, logger *log.Logger, s *service.ContactService, hs *domain_service.HTTPServices) {
 	api.Get("/by-owner", h.GetByOwner(logger, s, hs))
 	api.Get("/by-id", h.Get(logger, s))
+	api.Get("/favourites", h.GetFavourites(logger, s, hs))
 
 	api.Post("/create", h.CreateContact(logger, s, hs))
 	api.Post("/edit", h.EditContact(logger, s, hs))

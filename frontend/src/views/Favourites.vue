@@ -81,7 +81,7 @@ export default {
     async getContacts() {
       try {
         const res = await axios.get(
-          "/contacts/by-owner?id=" + window.sessionStorage.getItem("sessionID")
+          "/contacts/favourites?id=" + window.sessionStorage.getItem("sessionID")
         );
         this.contacts = res.data.contacts;
       } catch (e) {
