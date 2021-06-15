@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-button class="close-button" icon="el-icon-close" size="medium"></el-button>
+    <el-button class="close-button" @click="$emit('clicked')" icon="el-icon-close" size="medium"></el-button>
 
     <div class="user-info">
       <el-avatar
@@ -19,13 +19,13 @@
       @close="handleClose"
       :collapse="isCollapse"
     >
-      <el-menu-item index="1" @click="$router.push('/me')">
+      <el-menu-item index="1" @click="$router.push('/me');$emit('clicked')">
         <template #title>
           <i class="el-icon-house"></i>
           <span>Me</span>
         </template>
       </el-menu-item>
-      <el-menu-item index="2" @click="$router.push('/allcontacts')">
+      <el-menu-item index="2" @click="$router.push('/allcontacts');$emit('clicked')">
         <i class="el-icon-s-custom"></i>
         <template #title>Contacts</template>
       </el-menu-item>
@@ -49,8 +49,7 @@ import axios from "axios";
 export default {
   name: "HamburgerMenu",
   data: () => ({
-    name: "John Doe",
-    email: "JohnDoe@gmail.com"
+    
   }),
   methods: {
     async logout() {
@@ -83,25 +82,29 @@ export default {
   left: 0;
   top: 0;
   width: 40vw;
-  height: 100vh;
-  background-color: #fff;
+  /* height: 100vh; */
+  background-color: rgb(242, 242, 253);
 }
 
 .container > * {
+  margin-top: 8vh;
   margin-bottom: 4vh;
 }
 
 .menu > * {
-  margin-bottom: 4vh;
+  /* margin-top: 4vh; */
+  /* margin-bottom: 2vh; */
+  border: none;
+  background-color: rgb(242, 242, 253);
 }
 
 .close-button {
-  width: 30vw;
+  width: 100vw;
   background-color: transparent;
   color: black;
   border: none;
   position: absolute;
-  top: 3vh;
+  top: 0vh;
   left: 0;
 }
 

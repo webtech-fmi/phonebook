@@ -5,12 +5,9 @@
         class="back-button"
         type="primary"
         icon="el-icon-arrow-left"
-        size="medium"
-        v-if="id != -1"
-        @click="$router.go(-1)"
+        @click="$router.push(`/allcontacts`)"
+        >Back</el-button
       >
-        Back
-      </el-button>
       <el-button
         class="more-button"
         type="primary"
@@ -19,7 +16,7 @@
         @click="sideMenu = !sideMenu"
       >
       </el-button>
-      <HamburgerMenu class="side-menu" v-if="sideMenu"></HamburgerMenu>
+      <HamburgerMenu class="side-menu" @clicked="OnMenuClose" v-if="sideMenu"></HamburgerMenu>
     </div>
     <div class="avatar">
       <el-avatar
@@ -116,7 +113,20 @@
     <el-button class="edit-button" type="primary" @click="editButton = !editButton">
       {{ editButton == true ? "Edit" : "Save" }}</el-button
     >
-    <el-button class="merge-button" type="primary" v-if="id != -1">Merge with...</el-button>
+    <el-button class="merge-button" @click="openMerge" type="primary" v-if="id != -1"
+      >Merge with...</el-button
+    >
+    <el-dialog
+      class="merge-dialog"
+      title="Merge with..."
+      v-model="mergeDialog"
+      :before-close="handleClose"
+    >
+      <el-checkbox v-model="contact.checked" v-for="contact in contacts" :key="contact.id">{{
+        contact.personal.full_name
+      }}</el-checkbox>
+      <el-button type="primary" @click="mergeContacts">Confirm</el-button>
+    </el-dialog>
     <el-button class="delete-button" type="primary" v-if="id != -1">Delete</el-button>
   </div>
 </template>
@@ -129,6 +139,8 @@ export default {
   name: "Contact",
   props: ["id"],
   data: () => ({
+    mergeDialog: false,
+    contacts: [],
     user: {
       id: "",
       user_id: "",
@@ -160,6 +172,16 @@ export default {
         console.warn(e);
       }
     },
+    async getContacts() {
+      try {
+        const res = await axios.get(
+          "/contacts/by-owner?id=" + window.sessionStorage.getItem("sessionID")
+        );
+        this.contacts = res.data.contacts;
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async getContact() {
       try {
         const res = await axios.get("/contacts/by-id?id=" + this.id);
@@ -173,6 +195,38 @@ export default {
     },
     addAddress() {
       this.user.metadata.address = "";
+    },
+    async mergeContacts() {
+      const mergePayload = {
+        session_id: window.sessionStorage.getItem("sessionID"),
+        contacts: this.contacts.filter(c => c.checked).map(c => c.id),
+        main: this.id
+      };
+
+      try {
+        const res = await axios.post("/contacts/merge", mergePayload);
+        if (res.status == 200) {
+          this.$router.push("/allcontacts");
+        } else {
+          console.log("TODO");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+
+      this.mergeDialog = false;
+    },
+    async openMerge() {
+      await this.getContacts();
+      this.contacts.map(element => {
+        element.checked = false;
+        return element;
+      });
+      console.info(this.contacts);
+      this.mergeDialog = true;
+    },
+    OnMenuClose() {
+      this.sideMenu = false;
     }
   },
   async mounted() {
@@ -200,7 +254,18 @@ export default {
   margin: 3vh 3vw 3vh 3vw;
 }
 
+.dropdown-button {
+  margin-top: 6vh;
+  margin-bottom: 6vh;
+}
+
+.el-checkbox:last-of-type {
+  margin-right: 30px;
+}
+
 .back-button {
+  background-color: transparent;
+  color: #512da8;
   border: none;
   float: left;
 }

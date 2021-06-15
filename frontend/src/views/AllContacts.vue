@@ -18,7 +18,7 @@
       >
       </el-button>
     </div>
-    <HamburgerMenu class="side-menu" v-if="sideMenu"></HamburgerMenu>
+    <HamburgerMenu class="side-menu" @clicked="OnMenuClose" v-if="sideMenu"></HamburgerMenu>
     <el-autocomplete
       class="inline-input"
       v-model="state1"
@@ -88,6 +88,9 @@ export default {
       } catch (e) {
         console.warn(e);
       }
+    },
+    OnMenuClose() {
+      this.sideMenu = false;
     }
   }
 };

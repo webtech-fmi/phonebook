@@ -137,7 +137,7 @@ func (h Handler) MergeContacts(logger *log.Logger, ds *service.ContactService, h
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 
-		if err := ds.MergeContacts(ID, profile.ID.String(), request.Contacts); err != nil {
+		if err := ds.MergeContacts(request.Main, profile.ID.String(), request.Contacts); err != nil {
 			return routing.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 

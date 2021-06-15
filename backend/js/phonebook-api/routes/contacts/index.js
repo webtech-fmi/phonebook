@@ -69,21 +69,17 @@ contacts.post("/edit", async (req, res, next) => {
 
 contacts.post("/merge", async (req, res, next) => {
   try {
-    const id = {
-      id: req.body.id,
-    };
-
-    const ids = {
-      contacts: req.body.contacts.id,
+    const mergePayload = {
+      main: req.body.main,
+      contacts: req.body.contacts,
     };
 
     const response = await axios.post(
       process.env.CONTACT_SERVICE + "/contacts/merge?id=" + req.body.session_id,
-      id,
-      ids
+      mergePayload
     );
 
-    res.status(200).json(response);
+    res.status(200).json({ status: "success" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
